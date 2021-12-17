@@ -2,6 +2,7 @@ import {
   EventWithNamespace,
   EventHandlers,
   isString,
+  isFunction,
   generateRandomId,
 } from '@handie/runtime-core';
 
@@ -36,4 +37,8 @@ function resolveBindEvent(
   return resolved;
 }
 
-export { generateWidgetId, getEventWithNamespace, resolveBindEvent };
+function isComponentCtor(ctor: any): boolean {
+  return isFunction(ctor);
+}
+
+export { generateWidgetId, getEventWithNamespace, resolveBindEvent, isComponentCtor };

@@ -1,8 +1,31 @@
-import { ViewContextDescriptor, isFunction, getViews, createView } from '@handie/runtime-core';
-import { Component } from 'react';
+import {
+  ViewContextDescriptor,
+  isFunction,
+  getViews,
+  createModuleContext,
+  createView,
+} from '@handie/runtime-core';
 
-export default class ViewRenderer extends Component {
-  render() {
-    return <div>view renderer</div>;
+import { ReactNode, JSXElementConstructor, Component } from 'react';
+
+import { isComponentCtor } from '../../utils';
+
+export default class ViewRenderer extends Component<{ view: string; params: any[] }> {
+  public render(): ReactNode {
+    const [moduleName, resourceType, viewName] = this.props.view.split('.');
+    const view = getViews(moduleName)[viewName];
+
+    if (resourceType !== 'views' || !view) {
+      return null;
+    }
+
+    const ViewWidget = createView(
+      createModuleContext(moduleName),
+      isFunction(view) && !isComponentCtor(view)
+        ? (view as (...args: any[]) => ViewContextDescriptor)(...this.props.params)
+        : (view as ViewContextDescriptor),
+    ) as JSXElementConstructor<any>;
+
+    return <ViewWidget />;
   }
 }
