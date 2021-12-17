@@ -1,15 +1,9 @@
-import {
-  ViewFieldDescriptor,
-  ViewContext,
-  capitalize,
-  resolveWidgetCtor,
-} from '@handie/runtime-core';
+import { ViewFieldDescriptor, capitalize, resolveWidgetCtor } from '@handie/runtime-core';
 
-import { ReactNode, JSXElementConstructor, Component } from 'react';
+import { ReactNode, JSXElementConstructor } from 'react';
 
+import BaseRenderer from '../base';
 import { getRenderType } from './helper';
-
-import ViewReactContext from '../../contexts/view';
 
 interface FieldRendererProps {
   field: ViewFieldDescriptor;
@@ -18,13 +12,7 @@ interface FieldRendererProps {
   onChange: (fieldName: string, value: any) => void;
 }
 
-export default class FieldRenderer extends Component<FieldRendererProps> {
-  static contextType = ViewReactContext;
-
-  private get $$view(): ViewContext {
-    return this.context.viewContext;
-  }
-
+export default class FieldRenderer extends BaseRenderer<FieldRendererProps> {
   private handleFieldChange(value: any): void {
     this.props.onChange(this.props.field.name, value);
   }

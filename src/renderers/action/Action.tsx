@@ -1,24 +1,17 @@
 import {
   ClientAction,
-  ViewContext,
   capitalize,
   getBehaviorByKey,
   resolveWidgetCtor,
 } from '@handie/runtime-core';
 
-import { ReactNode, JSXElementConstructor, Component } from 'react';
+import { ReactNode, JSXElementConstructor } from 'react';
 
-import ViewReactContext from '../../contexts/view';
+import BaseRenderer from '../base';
 
-export default class ActionRenderer extends Component<{
+export default class ActionRenderer extends BaseRenderer<{
   action: ClientAction;
 }> {
-  static contextType = ViewReactContext;
-
-  private get $$view(): ViewContext {
-    return this.context.viewContext;
-  }
-
   public render(): ReactNode {
     const { action } = this.props;
 

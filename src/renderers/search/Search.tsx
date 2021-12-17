@@ -1,18 +1,12 @@
 import { ListViewContext, isFunction, getWidget } from '@handie/runtime-core';
 
-import { ReactNode, JSXElementConstructor, Component } from 'react';
+import { ReactNode, JSXElementConstructor } from 'react';
 
-import ViewReactContext from '../../contexts/view';
+import BaseRenderer from '../base';
 
-export default class SearchRenderer extends Component {
-  static contextType = ViewReactContext;
-
-  private get $$view(): ListViewContext {
-    return this.context.viewContext;
-  }
-
+export default class SearchRenderer extends BaseRenderer {
   public render(): ReactNode {
-    const search = this.$$view.getSearch();
+    const search = (this.$$view as ListViewContext).getSearch();
 
     let SearchWidget: JSXElementConstructor<any>;
 
