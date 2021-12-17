@@ -3,6 +3,6 @@ import { Component } from 'react';
 
 export default class ViewRenderer extends Component {
   render() {
-    return <div>view renderer</div>
+    return <div>view renderer</div>;
   }
 }

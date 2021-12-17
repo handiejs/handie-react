@@ -10,10 +10,12 @@ import { ReactNode, JSXElementConstructor, Component } from 'react';
 
 import ViewReactContext from '../../contexts/view';
 
-export default class ActionRenderer extends Component<{ action: ClientAction }> {
+export default class ActionRenderer extends Component<{
+  action: ClientAction;
+}> {
   static contextType = ViewReactContext;
 
-  private get $$view():ViewContext {
+  private get $$view(): ViewContext {
     return this.context.viewContext;
   }
 
@@ -27,9 +29,12 @@ export default class ActionRenderer extends Component<{ action: ClientAction }> 
     const ActionWidget = resolveWidgetCtor(
       this.$$view.getModuleContext(),
       action.widget,
-      () => `${capitalize(action.renderType || getBehaviorByKey('common.action.renderType') || '')}ActionWidget`,
+      () =>
+        `${capitalize(
+          action.renderType || getBehaviorByKey('common.action.renderType') || '',
+        )}ActionWidget`,
     ) as JSXElementConstructor<{ action: ClientAction }>;
 
-    return ActionRenderer ? <ActionWidget action={ action } /> : null;
+    return ActionRenderer ? <ActionWidget action={action} /> : null;
   }
 }

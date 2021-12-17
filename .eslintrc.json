@@ -1,4 +1,12 @@
 {
   "root": true,
-  "extends": ["@ntks/eslint-config"]
+  "extends": ["@ntks/eslint-config", "plugin:react/recommended"],
+  "plugins": ["react"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "jsx": true
+    },
+    "sourceType": "module"
+  }
 }

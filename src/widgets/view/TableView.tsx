@@ -27,17 +27,17 @@ export default class TableViewHeadlessWidget extends ListViewHeadlessWidget {
 
     return (
       <DataTable
-        { ...this.tableProps }
-        className="TableView-dataTable"
-        dataSource={ state.dataSource }
-        currentPage={ state.pageNum }
-        pageSize={ state.pageSize }
-        total={ state.total }
-        pageSizes={ this.config.pageSizes || getBehaviorByKey('common.view.listViewPageSizes') }
-        loading={ state.loading }
-        onSelectionChange={ selected => this.$$view.setValue(selected) }
-        onCurrentChange={ currentPage => this.$$view.setCurrentPage(currentPage) }
-        onSizeChange={ pageSize => this.$$view.setPageSize(pageSize) }
+        {...this.tableProps}
+        className='TableView-dataTable'
+        dataSource={state.dataSource}
+        currentPage={state.pageNum}
+        pageSize={state.pageSize}
+        total={state.total}
+        pageSizes={this.config.pageSizes || getBehaviorByKey('common.view.listViewPageSizes')}
+        loading={state.loading}
+        onSelectionChange={selected => this.$$view.setValue(selected)}
+        onCurrentChange={currentPage => this.$$view.setCurrentPage(currentPage)}
+        onSizeChange={pageSize => this.$$view.setPageSize(pageSize)}
       />
     );
   }
