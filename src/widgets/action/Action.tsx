@@ -67,7 +67,7 @@ export default class ActionHeadlessWidget extends BaseHeadlessWidget<{ action: C
     }
   }
 
-  protected created(): void {
+  public componentWillMount(): void {
     const {
       disableWhenNoSelection = this.getCommonBehavior('action.disableWhenNoSelection', true),
     } = this.config;
