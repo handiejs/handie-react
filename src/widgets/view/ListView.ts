@@ -1,19 +1,25 @@
 import { ListViewContext, SearchContext, getBehaviorByKey } from '@handie/runtime-core';
 
-import ViewHeadlessWidget from './View';
+import ViewHeadlessWidget, { ViewWidgetState } from './View';
 
-export default class ListViewHeadlessWidget extends ViewHeadlessWidget<ListViewContext> {
-  constructor(props: Record<string, any>) {
-    super(props);
+interface ListViewWidgetState extends ViewWidgetState {
+  dataSource: Record<string, any>[];
+  pageNum: number;
+  pageSize: number;
+  total: number;
+}
 
-    this.state = {
-      ...(this.state || {}),
-      dataSource: [],
-      pageNum: 1,
-      pageSize: 20,
-      total: 0,
-    };
-  }
+export default class ListViewHeadlessWidget extends ViewHeadlessWidget<
+  ListViewContext,
+  ListViewWidgetState
+> {
+  public readonly state = {
+    loading: false,
+    dataSource: [],
+    pageNum: 1,
+    pageSize: 20,
+    total: 0,
+  };
 
   protected get $$search(): SearchContext {
     return this.context.searchContext;
