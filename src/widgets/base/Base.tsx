@@ -1,6 +1,7 @@
 import {
   EventHandlers,
   EventHandler,
+  ModuleContext,
   ViewContext,
   retrieveData,
   getBehaviorByKey,
@@ -25,8 +26,18 @@ export default class BaseHeadlessWidget<
 
   private behaviors!: WidgetBehaviors;
 
+  /**
+   * Access the injected view context
+   */
   protected get $$view(): ViewContextType {
     return this.context.viewContext;
+  }
+
+  /**
+   * Access the injected module context
+   */
+  protected get $$module(): ModuleContext {
+    return this.$$view.getModuleContext() as ModuleContext;
   }
 
   protected setBehaviors(keyInTheme: string, options: WidgetBehaviors): void {

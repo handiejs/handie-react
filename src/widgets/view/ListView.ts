@@ -21,6 +21,9 @@ export default class ListViewHeadlessWidget extends ViewHeadlessWidget<
     total: 0,
   };
 
+  /**
+   * Access the injected search context
+   */
   protected get $$search(): SearchContext {
     return this.context.searchContext;
   }
@@ -36,6 +39,8 @@ export default class ListViewHeadlessWidget extends ViewHeadlessWidget<
   }
 
   public componentWillMount(): void {
+    super.componentWillMount();
+
     this.initPagenation();
 
     this.on({

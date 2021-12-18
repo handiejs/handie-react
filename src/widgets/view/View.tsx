@@ -19,4 +19,8 @@ export default class ViewHeadlessWidget<
   protected get config(): ConfigType {
     return this.$$view.getConfig() || {};
   }
+
+  public componentWillMount(): void {
+    this.on('busyChange', busy => this.setState({ loading: busy }));
+  }
 }
