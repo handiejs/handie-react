@@ -118,8 +118,11 @@ export default class TableViewHeadlessWidget extends ListViewHeadlessWidget {
 
   constructor(props: Record<string, any>) {
     super(props);
-
     this.setBehaviors('view.table', defaultBehaviors);
+  }
+
+  public componentWillMount(): void {
+    super.componentWillMount();
 
     this.tableProps = resolveTableProps(
       this.$$view,
@@ -127,15 +130,11 @@ export default class TableViewHeadlessWidget extends ListViewHeadlessWidget {
       this,
       this.getBehavior('inlineButtonActionSize'),
     );
-  }
-
-  public componentWillMount(): void {
-    super.componentWillMount();
 
     const searchContext = this.$$search;
 
     if (searchContext && !searchContext.isReady()) {
-      searchContext.on(getEventWithNamespace(this, 'ready'), this.loadTableData);
+      searchContext.on(getEventWithNamespace(this, 'ready'), () => this.loadTableData());
     } else {
       this.loadTableData();
     }
