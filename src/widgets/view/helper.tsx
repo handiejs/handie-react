@@ -29,7 +29,9 @@ function createCellRenderer(
   return class CellRenderer extends Component {
     render() {
       return (
-        <ViewReactContext.Provider value={viewContext}>{renderFunc()}</ViewReactContext.Provider>
+        <ViewReactContext.Provider value={{ viewContext }}>
+          {renderFunc()}
+        </ViewReactContext.Provider>
       );
     }
   };
@@ -42,13 +44,16 @@ function resolveCellRenderer(
   const widget = field.widget;
 
   return !isFunction(widget) || isComponentCtor(widget)
-    ? (_, data: ColumnContext<TableColumn>) =>
-        createCellRenderer(context.getChildren()[data.index], () => {
+    ? (_, data: ColumnContext<TableColumn>) => {
+        const CellRenderer = createCellRenderer(context.getChildren()[data.index], () => {
           const FieldRenderer = getRenderer('FieldRenderer') as ComponentCtor;
           const props = { ...data, field, value: data.row[data.column.key!], readonly: true };
 
           return FieldRenderer ? <FieldRenderer {...props} /> : null;
-        })
+        });
+
+        return <CellRenderer />;
+      }
     : (widget as CellComponentRenderer<TableColumn>);
 }
 
@@ -145,12 +150,17 @@ function resolveOperationColumn(
             const actionNode = ActionRenderer ? (
               <ActionRenderer
                 action={{ ...others, config: { size: inlineButtonSize, ...config } }}
+                key={`${others.name || others.text}InlineActionOfTableViewWidget`}
               />
             ) : null;
             const Tooltip = getControl('Tooltip') as ComponentCtor;
 
             return config.showTooltip === true && Tooltip ? (
-              <Tooltip className='ActionWidgetTooltip' content={action.text || ''}>
+              <Tooltip
+                className='ActionWidgetTooltip'
+                content={action.text || ''}
+                key={`${others.name || others.text}InlineActionTooltipOfTableViewWidget`}
+              >
                 {actionNode}
               </Tooltip>
             ) : (

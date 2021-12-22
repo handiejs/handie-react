@@ -4,3 +4,4 @@ export { default as StringFieldHeadlessWidget } from './StringField';
 export { default as TextFieldHeadlessWidget } from './TextField';
 export { default as EnumFieldHeadlessWidget } from './EnumField';
 export { default as MultiEnumFieldHeadlessWidget } from './MultiEnumField';
+export { default as RelationFieldHeadlessWidget } from './RelationField';

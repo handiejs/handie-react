@@ -31,7 +31,7 @@ export default class TableViewHeadlessWidget extends ListViewHeadlessWidget {
   }
 
   protected get accessible(): Record<string, boolean> | null {
-    return null;
+    return {};
   }
 
   protected get topActions(): ClientAction[] {
@@ -42,18 +42,21 @@ export default class TableViewHeadlessWidget extends ListViewHeadlessWidget {
     const SearchRenderer = getRenderer('SearchRenderer') as ComponentCtor;
 
     return this.searchable ? (
-      <div className='TableView-search'>{SearchRenderer ? <SearchRenderer /> : null}</div>
+      <div className='TableView-search' key='SearchOfTableViewHeadlessWidget'>
+        {SearchRenderer ? <SearchRenderer /> : null}
+      </div>
     ) : null;
   }
 
   protected renderActionBar(): ReactNode {
     return this.topActions.length > 0 ? (
-      <div className='TableView-tableActions'>
+      <div className='TableView-tableActions' key='ActionBarOfTableViewHeadlessWidget'>
         {this.topActions.map(({ config = {}, ...others }) => {
           const ActionRenderer = getRenderer('ActionRenderer') as ComponentCtor;
 
           return ActionRenderer ? (
             <ActionRenderer
+              key={others.name || others.text}
               action={{
                 ...others,
                 config: { size: this.getBehavior('topButtonActionSize'), ...config },
@@ -71,6 +74,7 @@ export default class TableViewHeadlessWidget extends ListViewHeadlessWidget {
 
     return (
       <DataTable
+        key='DataTableOfTableViewHeadlessWidget'
         {...this.tableProps}
         className='TableView-dataTable'
         dataSource={state.dataSource}
