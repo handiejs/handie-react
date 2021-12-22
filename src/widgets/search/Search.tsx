@@ -1,4 +1,6 @@
 import {
+  EventHandlers,
+  EventHandler,
   ConfigType,
   FilterDescriptor,
   SearchDescriptor,
@@ -8,14 +10,23 @@ import {
   isFunction,
 } from '@handie/runtime-core';
 
+import { getEventWithNamespace, resolveBindEvent } from '../../utils';
 import BaseHeadlessWidget from '../base/Base';
 
-export default class SearchHeadlessWidget extends BaseHeadlessWidget<{}, {}, ListViewContext> {
+interface SearchWidgetState {
+  condition: SearchCondition;
+}
+
+export default class SearchHeadlessWidget extends BaseHeadlessWidget<
+  {},
+  SearchWidgetState,
+  ListViewContext
+> {
+  public readonly state = { condition: {} } as SearchWidgetState;
+
   protected get $$search(): SearchContext {
     return this.context.searchContext;
   }
-
-  protected condition: SearchCondition = {};
 
   protected get filters(): FilterDescriptor[] {
     return this.$$search ? this.$$search.getFilters() : [];
@@ -25,8 +36,16 @@ export default class SearchHeadlessWidget extends BaseHeadlessWidget<{}, {}, Lis
     return (this.$$view.getSearch() as SearchDescriptor).config || {};
   }
 
+  protected on(event: string | EventHandlers, handler?: EventHandler): void {
+    this.$$search.on(resolveBindEvent(this, event), handler);
+  }
+
+  protected off(event?: string, handler?: EventHandler): void {
+    this.$$search.off(getEventWithNamespace(this, event), handler);
+  }
+
   protected initCondition(condition: SearchCondition = {}): void {
-    this.$$search.setValue({ ...this.condition, ...condition });
+    this.$$search.setValue({ ...this.state.condition, ...condition });
   }
 
   protected setFilterValue(name: string, value: any): void {
@@ -56,11 +75,12 @@ export default class SearchHeadlessWidget extends BaseHeadlessWidget<{}, {}, Lis
       };
     }
 
-    this.condition = condition;
+    this.setState({ condition });
 
     this.on({
-      change: value => (this.condition = { ...value }),
-      filterChange: ({ name, value }) => (this.condition[name] = value),
+      change: value => this.setState({ condition: { ...value } }),
+      filterChange: ({ name, value }) =>
+        this.setState({ condition: { ...this.state.condition, [name]: value } }),
     });
   }
 }

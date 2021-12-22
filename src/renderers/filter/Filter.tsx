@@ -37,7 +37,11 @@ export default class FilterRenderer extends BaseRenderer<FilterRendererProps> {
     >;
 
     return FilterWidget ? (
-      <FilterWidget filter={filter} value={value} onChange={this.handleFilterChange} />
+      <FilterWidget
+        filter={filter}
+        value={value}
+        onChange={value => this.handleFilterChange(value)}
+      />
     ) : null;
   }
 }
