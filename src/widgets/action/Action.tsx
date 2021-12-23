@@ -4,8 +4,19 @@ import { ReactNode, JSXElementConstructor } from 'react';
 
 import BaseHeadlessWidget from '../base/Base';
 
-export default class ActionHeadlessWidget extends BaseHeadlessWidget<{ action: ClientAction }> {
-  protected disabled: boolean = false;
+interface ActionWidgetProps {
+  action: ClientAction;
+}
+
+interface ActionWidgetState {
+  disabled: boolean;
+}
+
+export default class ActionHeadlessWidget extends BaseHeadlessWidget<
+  ActionWidgetProps,
+  ActionWidgetState
+> {
+  public readonly state = { disabled: false } as ActionWidgetState;
 
   protected get config(): ConfigType {
     return this.props.action.config || {};
@@ -79,12 +90,11 @@ export default class ActionHeadlessWidget extends BaseHeadlessWidget<{ action: C
     const { context } = this.props.action;
     const batchOrBoth = context === 'batch' || context === 'both';
 
-    this.disabled = batchOrBoth;
+    this.setState({ disabled: batchOrBoth });
 
     if (batchOrBoth) {
-      this.on(
-        'change',
-        value => (this.disabled = context === 'batch' ? value.length < 2 : value.length === 0),
+      this.on('change', value =>
+        this.setState({ disabled: context === 'batch' ? value.length < 2 : value.length === 0 }),
       );
     }
   }
