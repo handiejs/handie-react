@@ -1,12 +1,6 @@
-import { ValidationResult, ObjectViewContext } from '@handie/runtime-core';
+import { ObjectViewContext, ObjectViewWidgetState } from '@handie/runtime-core';
 
-import ViewHeadlessWidget, { ViewWidgetState } from './View';
-
-interface ObjectViewWidgetState extends ViewWidgetState {
-  dataSource: Record<string, any>;
-  value: Record<string, any>;
-  validation: Record<string, ValidationResult>;
-}
+import ViewHeadlessWidget from './View';
 
 export default class ObjectViewHeadlessWidget extends ViewHeadlessWidget<
   ObjectViewContext,

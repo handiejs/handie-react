@@ -1,16 +1,15 @@
-import { ConfigType, ClientAction, isString, noop, getControl } from '@handie/runtime-core';
+import {
+  ConfigType,
+  ActionWidgetProps,
+  ActionWidgetState,
+  isString,
+  noop,
+  getControl,
+} from '@handie/runtime-core';
 
 import { ReactNode, JSXElementConstructor } from 'react';
 
 import BaseHeadlessWidget from '../base/Base';
-
-interface ActionWidgetProps {
-  action: ClientAction;
-}
-
-interface ActionWidgetState {
-  disabled: boolean;
-}
 
 export default class ActionHeadlessWidget extends BaseHeadlessWidget<
   ActionWidgetProps,

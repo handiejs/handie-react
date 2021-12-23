@@ -1,31 +1,19 @@
 import {
-  ConfigType,
   ContextExpression,
-  ValidationResult,
+  FormRendererProps,
   isBoolean,
   isString,
   isNumber,
   runExpression,
   getControl,
   getBehaviorByKey,
+  resolveFieldBehavior,
 } from '@handie/runtime-core';
-import { ViewFieldDescriptor } from '@handie/runtime-core/dist/types/input';
 
 import { JSXElementConstructor, ReactNode } from 'react';
 
 import BaseRenderer from '../base';
 import FieldRenderer from '../field';
-import { resolveFieldBehavior } from './helper';
-
-interface FormRendererProps {
-  readonly fields: ViewFieldDescriptor[];
-  readonly value: Record<string, any>;
-  readonly readonly: boolean;
-  readonly validation: Record<string, ValidationResult>;
-  readonly config: ConfigType;
-  readonly className: any;
-  readonly onChange: (fieldName: string, value: any) => void;
-}
 
 export default class FormRenderer extends BaseRenderer<FormRendererProps> {
   private isTrue(expression: ContextExpression, defaultReturnValue?: any): boolean {

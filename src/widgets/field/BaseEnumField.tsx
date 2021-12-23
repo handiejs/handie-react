@@ -1,31 +1,27 @@
-import { ObjectValue, isString, runExpression } from '@handie/runtime-core';
-import { EnumFieldOption, EnumField } from '@handie/runtime-core/dist/types/input';
+import {
+  ObjectValue,
+  ResolvedEnumFieldOption,
+  EnumFieldWidgetState,
+  isString,
+  runExpression,
+} from '@handie/runtime-core';
+import { EnumField } from '@handie/runtime-core/dist/types/input';
 
 import { resolveEnumOptions } from '../helper';
 import FieldHeadlessWidget from './Field';
 
-interface ResolvedOption extends Omit<EnumFieldOption, 'available'> {
-  disabled: boolean;
-}
-
-interface BaseEnumFieldWidgetState {
-  internalOptions: EnumFieldOption[];
-  options: ResolvedOption[];
-  optionMap: Record<string, EnumFieldOption>;
-}
-
 export default class BaseEnumFieldHeadlessWidget<ValueType> extends FieldHeadlessWidget<
   ValueType,
-  BaseEnumFieldWidgetState
+  EnumFieldWidgetState
 > {
   public readonly state = {
     internalOptions: [],
     options: [],
     optionMap: {},
-  } as BaseEnumFieldWidgetState;
+  } as EnumFieldWidgetState;
 
-  private resolveOptions(record: ObjectValue): ResolvedOption[] {
-    const resolved: ResolvedOption[] = [];
+  private resolveOptions(record: ObjectValue): ResolvedEnumFieldOption[] {
+    const resolved: ResolvedEnumFieldOption[] = [];
 
     this.state.internalOptions.forEach(({ available, ...others }) => {
       let optionAvailable = true;

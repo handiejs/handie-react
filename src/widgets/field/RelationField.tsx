@@ -4,15 +4,12 @@ import {
   ResponseFail,
   ObjectValue,
   ListValue,
+  RelationFieldWidgetState,
   noop,
 } from '@handie/runtime-core';
 import { DynamicRelationField } from '@handie/runtime-core/dist/types/input';
 
 import FieldHeadlessWidget from './Field';
-
-interface RelationFieldWidgetState<ValueType> {
-  internalValue: ValueType;
-}
 
 export default class RelationFieldHeadlessWidget<
   ValueType = ObjectValue | ListValue

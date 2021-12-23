@@ -1,13 +1,12 @@
-import { ConfigType, ListViewContext, SearchContext, includes } from '@handie/runtime-core';
-import { FilterDescriptor } from '@handie/runtime-core/dist/types/input';
+import {
+  ConfigType,
+  ListViewContext,
+  SearchContext,
+  FilterWidgetProps,
+  includes,
+} from '@handie/runtime-core';
 
 import BaseHeadlessWidget from '../base/Base';
-
-interface FilterWidgetProps<ValueType> {
-  readonly filter: FilterDescriptor;
-  readonly value: ValueType;
-  readonly onChange: (value: ValueType) => void;
-}
 
 export default class FilterHeadlessWidget<
   ValueType = any,

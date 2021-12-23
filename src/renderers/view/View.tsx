@@ -1,5 +1,6 @@
 import {
   ViewContextDescriptor,
+  ViewRendererProps,
   isFunction,
   getViews,
   createModuleContext,
@@ -10,7 +11,7 @@ import { ReactNode, JSXElementConstructor, Component } from 'react';
 
 import { isComponentCtor } from '../../utils';
 
-export default class ViewRenderer extends Component<{ view: string; params: any[] }> {
+export default class ViewRenderer extends Component<ViewRendererProps> {
   public render(): ReactNode {
     const [moduleName, resourceType, viewName] = this.props.view.split('.');
     const view = getViews(moduleName)[viewName];

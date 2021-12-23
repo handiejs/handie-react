@@ -1,5 +1,7 @@
 import {
   ClientAction,
+  ActionRendererProps,
+  ActionWidgetProps,
   capitalize,
   getBehaviorByKey,
   resolveWidgetCtor,
@@ -9,9 +11,7 @@ import { ReactNode, JSXElementConstructor } from 'react';
 
 import BaseRenderer from '../base';
 
-export default class ActionRenderer extends BaseRenderer<{
-  action: ClientAction;
-}> {
+export default class ActionRenderer extends BaseRenderer<ActionRendererProps> {
   public render(): ReactNode {
     const { action } = this.props;
 
@@ -26,7 +26,7 @@ export default class ActionRenderer extends BaseRenderer<{
         `${capitalize(
           action.renderType || getBehaviorByKey('common.action.renderType') || '',
         )}ActionWidget`,
-    ) as JSXElementConstructor<{ action: ClientAction }>;
+    ) as JSXElementConstructor<ActionWidgetProps>;
 
     return ActionRenderer ? <ActionWidget action={action} /> : null;
   }

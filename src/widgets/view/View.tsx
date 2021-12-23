@@ -1,10 +1,11 @@
-import { ConfigType, ViewFieldDescriptor, ViewContext } from '@handie/runtime-core';
+import {
+  ConfigType,
+  ViewFieldDescriptor,
+  ViewContext,
+  ViewWidgetState,
+} from '@handie/runtime-core';
 
 import BaseHeadlessWidget from '../base/Base';
-
-export interface ViewWidgetState {
-  loading: boolean;
-}
 
 export default class ViewHeadlessWidget<
   ViewContextType extends ViewContext = ViewContext,

@@ -1,16 +1,13 @@
-import { ViewFieldDescriptor, capitalize, resolveWidgetCtor } from '@handie/runtime-core';
+import {
+  FieldRendererProps,
+  capitalize,
+  resolveWidgetCtor,
+  resolveFieldRenderType,
+} from '@handie/runtime-core';
 
 import { ReactNode, JSXElementConstructor } from 'react';
 
 import BaseRenderer from '../base';
-import { getRenderType } from './helper';
-
-interface FieldRendererProps {
-  field: ViewFieldDescriptor;
-  value: any;
-  readonly: boolean;
-  onChange: (fieldName: string, value: any) => void;
-}
 
 export default class FieldRenderer extends BaseRenderer<FieldRendererProps> {
   private handleFieldChange(value: any): void {
@@ -25,7 +22,7 @@ export default class FieldRenderer extends BaseRenderer<FieldRendererProps> {
       this.$$view.getModuleContext(),
       componentRenderer,
       () =>
-        `${getRenderType(field)
+        `${resolveFieldRenderType(field)
           .split('-')
           .map(part => capitalize(part))
           .join('')}${readonly ? 'Read' : 'Edit'}${(field.dataType || '')

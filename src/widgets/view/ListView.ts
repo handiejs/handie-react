@@ -1,13 +1,11 @@
-import { ListViewContext, SearchContext, getBehaviorByKey } from '@handie/runtime-core';
+import {
+  ListViewContext,
+  SearchContext,
+  ListViewWidgetState,
+  getBehaviorByKey,
+} from '@handie/runtime-core';
 
-import ViewHeadlessWidget, { ViewWidgetState } from './View';
-
-interface ListViewWidgetState extends ViewWidgetState {
-  dataSource: Record<string, any>[];
-  pageNum: number;
-  pageSize: number;
-  total: number;
-}
+import ViewHeadlessWidget from './View';
 
 export default class ListViewHeadlessWidget extends ViewHeadlessWidget<
   ListViewContext,

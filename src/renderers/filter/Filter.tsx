@@ -1,16 +1,13 @@
-import { capitalize, resolveWidgetCtor } from '@handie/runtime-core';
-import { FilterDescriptor } from '@handie/runtime-core/dist/types/input';
+import {
+  FilterRendererProps,
+  capitalize,
+  resolveWidgetCtor,
+  resolveFilterRenderType,
+} from '@handie/runtime-core';
 
 import { ReactNode, JSXElementConstructor } from 'react';
 
 import BaseRenderer from '../base';
-import { getRenderType } from './helper';
-
-interface FilterRendererProps {
-  filter: FilterDescriptor;
-  value: any;
-  onChange: (filterName: string, value: any) => void;
-}
 
 export default class FilterRenderer extends BaseRenderer<FilterRendererProps> {
   private handleFilterChange(value: any): void {
@@ -25,7 +22,7 @@ export default class FilterRenderer extends BaseRenderer<FilterRendererProps> {
       this.$$view.getModuleContext(),
       componentRenderer,
       () =>
-        `${getRenderType(filter)
+        `${resolveFilterRenderType(filter)
           .split('-')
           .map(part => capitalize(part))
           .join('')}${(filter.dataType || '')

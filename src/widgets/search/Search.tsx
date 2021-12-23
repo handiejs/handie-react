@@ -7,15 +7,12 @@ import {
   SearchCondition,
   SearchContext,
   ListViewContext,
+  SearchWidgetState,
   isFunction,
 } from '@handie/runtime-core';
 
 import { getEventWithNamespace, resolveBindEvent } from '../../utils';
 import BaseHeadlessWidget from '../base/Base';
-
-interface SearchWidgetState {
-  condition: SearchCondition;
-}
 
 export default class SearchHeadlessWidget extends BaseHeadlessWidget<
   {},

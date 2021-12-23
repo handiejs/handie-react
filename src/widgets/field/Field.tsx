@@ -1,19 +1,13 @@
 import {
   ConfigType,
   ValueChecker,
-  ViewFieldDescriptor,
   ObjectViewContext,
+  FieldWidgetProps,
   isBoolean,
   includes,
 } from '@handie/runtime-core';
 
 import BaseHeadlessWidget from '../base';
-
-interface FieldWidgetProps<ValueType> {
-  readonly field: ViewFieldDescriptor;
-  readonly value: ValueType;
-  readonly onChange: (value: ValueType) => void;
-}
 
 export default class FieldHeadlessWidget<
   ValueType = any,
