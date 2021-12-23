@@ -42,7 +42,10 @@ export default class TableViewHeadlessWidget extends ListViewHeadlessWidget {
     const SearchRenderer = getRenderer('SearchRenderer') as ComponentCtor;
 
     return this.searchable ? (
-      <div className='TableView-search' key='SearchOfTableViewHeadlessWidget'>
+      <div
+        className={this.getStyleClassName('TableView-search')}
+        key='SearchOfTableViewHeadlessWidget'
+      >
         {SearchRenderer ? <SearchRenderer /> : null}
       </div>
     ) : null;
@@ -50,7 +53,10 @@ export default class TableViewHeadlessWidget extends ListViewHeadlessWidget {
 
   protected renderActionBar(): ReactNode {
     return this.topActions.length > 0 ? (
-      <div className='TableView-tableActions' key='ActionBarOfTableViewHeadlessWidget'>
+      <div
+        className={this.getStyleClassName('TableView-tableActions')}
+        key='ActionBarOfTableViewHeadlessWidget'
+      >
         {this.topActions.map(({ config = {}, ...others }) => {
           const ActionRenderer = getRenderer('ActionRenderer') as ComponentCtor;
 
@@ -76,7 +82,7 @@ export default class TableViewHeadlessWidget extends ListViewHeadlessWidget {
       <DataTable
         key='DataTableOfTableViewHeadlessWidget'
         {...this.tableProps}
-        className='TableView-dataTable'
+        className={this.getStyleClassName('TableView-dataTable')}
         dataSource={state.dataSource}
         currentPage={state.pageNum}
         pageSize={state.pageSize}

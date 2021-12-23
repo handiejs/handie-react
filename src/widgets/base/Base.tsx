@@ -22,6 +22,8 @@ export default class BaseHeadlessWidget<
 
   private __handieReactWidgetId: string = generateWidgetId();
 
+  private __style!: Record<string, any>;
+
   private behaviorKey!: string;
 
   private behaviors!: WidgetBehaviors;
@@ -51,6 +53,14 @@ export default class BaseHeadlessWidget<
 
   protected getCommonBehavior(path: string, defaultBehavior?: any): any {
     return getBehaviorByKey(`common.${path}`, defaultBehavior);
+  }
+
+  protected setStyleClassNames(styleClassNames: Record<string, string>): void {
+    this.__style = styleClassNames;
+  }
+
+  protected getStyleClassName(className: string): string {
+    return (this.__style || {})[className] || '';
   }
 
   protected on(event: string | EventHandlers, handler?: EventHandler): void {
