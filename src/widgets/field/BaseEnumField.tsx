@@ -1,5 +1,6 @@
 import {
   ObjectValue,
+  EnumFieldOption,
   ResolvedEnumFieldOption,
   EnumFieldWidgetState,
   isString,
@@ -20,10 +21,13 @@ export default class BaseEnumFieldHeadlessWidget<ValueType> extends FieldHeadles
     optionMap: {},
   } as EnumFieldWidgetState;
 
-  private resolveOptions(record: ObjectValue): ResolvedEnumFieldOption[] {
+  private resolveOptions(
+    record: ObjectValue,
+    options: EnumFieldOption[] = this.state.internalOptions,
+  ): ResolvedEnumFieldOption[] {
     const resolved: ResolvedEnumFieldOption[] = [];
 
-    this.state.internalOptions.forEach(({ available, ...others }) => {
+    options.forEach(({ available, ...others }) => {
       let optionAvailable = true;
 
       if (isString(available)) {
@@ -56,7 +60,7 @@ export default class BaseEnumFieldHeadlessWidget<ValueType> extends FieldHeadles
     resolveEnumOptions(this.$$view, this.props.field as EnumField, options => {
       this.setState({
         internalOptions: options,
-        options: this.resolveOptions(this.$$view.getValue()),
+        options: this.resolveOptions(this.$$view.getValue(), options),
         optionMap: options.reduce((prev, opt) => ({ ...prev, [opt.value]: opt }), {}),
       });
 

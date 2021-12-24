@@ -11,7 +11,7 @@ import BaseRenderer from '../base';
 
 export default class FieldRenderer extends BaseRenderer<FieldRendererProps> {
   private handleFieldChange(value: any): void {
-    this.props.onChange(this.props.field.name, value);
+    this.props.onChange!(this.props.field.name, value);
   }
 
   public render(): ReactNode {
@@ -36,7 +36,7 @@ export default class FieldRenderer extends BaseRenderer<FieldRendererProps> {
     >;
 
     return FieldWidget ? (
-      <FieldWidget field={field} value={value} onChange={this.handleFieldChange} />
+      <FieldWidget field={field} value={value} onChange={value => this.handleFieldChange(value)} />
     ) : null;
   }
 }

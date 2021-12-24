@@ -2,9 +2,8 @@ import {
   ConfigType,
   ActionWidgetProps,
   ActionWidgetState,
-  isString,
-  noop,
   getControl,
+  executeClientAction,
 } from '@handie/runtime-core';
 
 import { ReactNode, JSXElementConstructor } from 'react';
@@ -49,32 +48,7 @@ export default class ActionHeadlessWidget extends BaseHeadlessWidget<
   }
 
   protected onExecute(): void {
-    const { danger, confirm, text, execute } = this.props.action;
-
-    let beforeExecute: ((callback: () => Promise<void>) => void) | undefined;
-
-    // if (danger || confirm) {
-    //   beforeExecute = callback =>
-    //     MessageBox.confirm(
-    //       isString(confirm) ? (confirm as string) : `确定要${text || '执行此操作'}？`,
-    //       '提示',
-    //       { type: 'warning' },
-    //     )
-    //       .then(callback)
-    //       .catch(noop);
-    // }
-
-    const executeAction = async () => {
-      if (execute) {
-        await Promise.resolve(execute(this.$$view, this));
-      }
-    };
-
-    if (beforeExecute) {
-      beforeExecute(executeAction);
-    } else {
-      executeAction();
-    }
+    executeClientAction(this.$$view, this.props.action);
   }
 
   public componentWillMount(): void {

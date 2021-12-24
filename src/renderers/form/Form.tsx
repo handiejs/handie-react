@@ -76,7 +76,7 @@ export default class FormRenderer extends BaseRenderer<FormRendererProps> {
         return;
       }
 
-      const fieldValidation = this.props.validation[name] || { success: true };
+      const fieldValidation = (this.props.validation || {})[name] || { success: true };
       const readonly = this.resolveReadonly(this.props.readonly || field.readonly);
 
       const formItemProps: Record<string, any> = {
@@ -86,6 +86,7 @@ export default class FormRenderer extends BaseRenderer<FormRendererProps> {
 
       const formItemChildren: ReactNode[] = [
         <FieldRenderer
+          key={`${name}FieldRendererOfFormRenderer`}
           field={field}
           value={this.props.value[name]}
           readonly={readonly}
@@ -100,7 +101,7 @@ export default class FormRenderer extends BaseRenderer<FormRendererProps> {
           const Tooltip = getControl('Tooltip') as JSXElementConstructor<any>;
           const Icon = getControl('Icon') as JSXElementConstructor<any>;
 
-          formItemChildren.push(
+          formItemProps.label = (
             <span>
               {label}
               {Tooltip ? (
@@ -108,7 +109,7 @@ export default class FormRenderer extends BaseRenderer<FormRendererProps> {
                   {Icon ? <Icon refs={resolveBehavior('hintIcon', '')} /> : null}
                 </Tooltip>
               ) : null}
-            </span>,
+            </span>
           );
         } else {
           formItemProps.label = label;
@@ -121,7 +122,11 @@ export default class FormRenderer extends BaseRenderer<FormRendererProps> {
       const FormField = getControl('FormField') as JSXElementConstructor<any>;
 
       if (FormField) {
-        formItems.push(<FormField {...formItemProps}>{formItemChildren}</FormField>);
+        formItems.push(
+          <FormField key={`${name}FormFieldOfFormRenderer`} {...formItemProps}>
+            {formItemChildren}
+          </FormField>,
+        );
       }
     });
 
