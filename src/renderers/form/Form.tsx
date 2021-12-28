@@ -1,5 +1,6 @@
 import {
   ContextExpression,
+  ViewFieldDescriptor,
   FormRendererProps,
   isBoolean,
   isString,
@@ -8,10 +9,12 @@ import {
   getControl,
   getBehaviorByKey,
   resolveFieldBehavior,
+  renderFormFieldNodes,
 } from '@handie/runtime-core';
 
-import { JSXElementConstructor, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
+import { ComponentCtor } from '../../types/component';
 import BaseRenderer from '../base';
 import FieldRenderer from '../field';
 
@@ -62,79 +65,83 @@ export default class FormRenderer extends BaseRenderer<FormRendererProps> {
       : getBehaviorByKey('common.view.objectViewShowValidationMessage');
   }
 
-  private resolveFormItems(): ReactNode {
-    const formItems: ReactNode[] = [];
+  private renderField(field: ViewFieldDescriptor): ReactNode {
+    const { name, label, hint, config = {} } = field;
 
-    this.props.fields.forEach(field => {
-      if (field.hidden) {
-        return;
-      }
+    const fieldValidation = (this.props.validation || {})[name] || { success: true };
+    const readonly = this.resolveReadonly(this.props.readonly || field.readonly);
 
-      const { name, label, available, hint, config = {} } = field;
+    const formItemProps: Record<string, any> = {
+      required: this.resolveFieldRequired(readonly, field.required),
+      message: fieldValidation.success ? '' : fieldValidation.message,
+    };
 
-      if (isString(available) && !this.isTrue(available!, false)) {
-        return;
-      }
+    const formItemChildren: ReactNode[] = [
+      <FieldRenderer
+        key={`${name}FieldRendererOfFormRenderer`}
+        field={field}
+        value={this.props.value[name]}
+        readonly={readonly}
+        onChange={this.props.onChange}
+      />,
+    ];
 
-      const fieldValidation = (this.props.validation || {})[name] || { success: true };
-      const readonly = this.resolveReadonly(this.props.readonly || field.readonly);
+    const resolveBehavior = resolveFieldBehavior.bind(null, config);
 
-      const formItemProps: Record<string, any> = {
-        required: this.resolveFieldRequired(readonly, field.required),
-        message: fieldValidation.success ? '' : fieldValidation.message,
-      };
+    if (resolveBehavior('showHintAtFormItem', false) === true) {
+      if (resolveBehavior('hintPositionOfFormItem', 'explain') === 'label' && hint) {
+        const Tooltip = getControl('Tooltip') as ComponentCtor;
+        const Icon = getControl('Icon') as ComponentCtor;
 
-      const formItemChildren: ReactNode[] = [
-        <FieldRenderer
-          key={`${name}FieldRendererOfFormRenderer`}
-          field={field}
-          value={this.props.value[name]}
-          readonly={readonly}
-          onChange={this.props.onChange}
-        />,
-      ];
-
-      const resolveBehavior = resolveFieldBehavior.bind(null, config);
-
-      if (resolveBehavior('showHintAtFormItem', false) === true) {
-        if (resolveBehavior('hintPositionOfFormItem', 'explain') === 'label' && hint) {
-          const Tooltip = getControl('Tooltip') as JSXElementConstructor<any>;
-          const Icon = getControl('Icon') as JSXElementConstructor<any>;
-
-          formItemProps.label = (
-            <span>
-              {label}
-              {Tooltip ? (
-                <Tooltip content={hint}>
-                  {Icon ? <Icon refs={resolveBehavior('hintIcon', '')} /> : null}
-                </Tooltip>
-              ) : null}
-            </span>
-          );
-        } else {
-          formItemProps.label = label;
-          formItemProps.hint = hint;
-        }
+        formItemProps.label = (
+          <span>
+            {label}
+            {Tooltip ? (
+              <Tooltip content={hint}>
+                {Icon ? <Icon refs={resolveBehavior('hintIcon', '')} /> : null}
+              </Tooltip>
+            ) : null}
+          </span>
+        );
       } else {
         formItemProps.label = label;
+        formItemProps.hint = hint;
       }
+    } else {
+      formItemProps.label = label;
+    }
 
-      const FormField = getControl('FormField') as JSXElementConstructor<any>;
+    const FormField = getControl('FormField') as ComponentCtor;
 
-      if (FormField) {
-        formItems.push(
-          <FormField key={`${name}FormFieldOfFormRenderer`} {...formItemProps}>
-            {formItemChildren}
-          </FormField>,
-        );
-      }
-    });
+    return FormField ? (
+      <FormField key={`${name}FormFieldOfFormRenderer`} {...formItemProps}>
+        {formItemChildren}
+      </FormField>
+    ) : null;
+  }
 
-    return formItems;
+  private renderFieldRow(fields: ViewFieldDescriptor[], fakeIndex: number): ReactNode {
+    const GridRow = getControl('GridRow') as ComponentCtor;
+    const GridCol = getControl('GridCol') as ComponentCtor;
+
+    return GridRow ? (
+      <GridRow key={`FieldRow${fakeIndex}OfFormRenderer`} gutter={24}>
+        {fields.map(field =>
+          GridCol ? (
+            <GridCol
+              key={`FieldCol${field.name}OfFormRenderer`}
+              span={fakeIndex > -1 ? 24 / fields.length : undefined}
+            >
+              {this.renderField(field)}
+            </GridCol>
+          ) : null,
+        )}
+      </GridRow>
+    ) : null;
   }
 
   public render(): ReactNode {
-    const FormControl = getControl('Form') as JSXElementConstructor<any>;
+    const FormControl = getControl('Form') as ComponentCtor;
 
     return FormControl ? (
       <FormControl
@@ -143,7 +150,14 @@ export default class FormRenderer extends BaseRenderer<FormRendererProps> {
         controlSize={this.resolveFormControlSize()}
         hideMessage={!this.resolveShowValidationMessage()}
       >
-        {this.resolveFormItems()}
+        {renderFormFieldNodes(
+          this.props.fields.filter(
+            ({ available }) => !isString(available) || this.isTrue(available!, false),
+          ),
+          (this.props.config || {}).arrangement,
+          this.renderField.bind(this),
+          this.renderFieldRow.bind(this),
+        )}
       </FormControl>
     ) : null;
   }

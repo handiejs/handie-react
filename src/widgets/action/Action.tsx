@@ -10,11 +10,10 @@ import { ReactNode, JSXElementConstructor } from 'react';
 
 import BaseHeadlessWidget from '../base/Base';
 
-export default class ActionHeadlessWidget extends BaseHeadlessWidget<
-  ActionWidgetProps,
-  ActionWidgetState
-> {
-  public readonly state = { disabled: false } as ActionWidgetState;
+export default class ActionHeadlessWidget<
+  S extends ActionWidgetState = ActionWidgetState
+> extends BaseHeadlessWidget<ActionWidgetProps, S> {
+  public readonly state = { disabled: false } as S;
 
   protected get config(): ConfigType {
     return this.props.action.config || {};
