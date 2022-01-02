@@ -4,68 +4,39 @@ import {
   ResponseFail,
   ObjectValue,
   ListValue,
-  RelationFieldWidgetState,
-  noop,
 } from '@handie/runtime-core';
 import { DynamicRelationField } from '@handie/runtime-core/dist/types/input';
+import {
+  FieldWidgetConfig,
+  RelationFieldWidgetState,
+  RelationFieldHeadlessWidget as _RelationFieldHeadlessWidget,
+} from '@handie/runtime-core/dist/widgets';
 
 import FieldHeadlessWidget from './Field';
 
 export default class RelationFieldHeadlessWidget<
-  ValueType = ObjectValue | ListValue
-> extends FieldHeadlessWidget<ValueType, RelationFieldWidgetState<ValueType>> {
+  ValueType = ObjectValue | ListValue,
+  CT extends FieldWidgetConfig = FieldWidgetConfig
+> extends FieldHeadlessWidget<
+  ValueType,
+  CT,
+  _RelationFieldHeadlessWidget<ValueType, CT>,
+  RelationFieldWidgetState<ValueType>
+> {
   protected get labelKey(): string {
-    return (
-      (this.props.field.dynamic && (this.props.field as DynamicRelationField).relatedLabelKey) ||
-      'label'
-    );
+    return this.$$_h.getLabelKey();
   }
 
   protected get valueKey(): string {
-    let key = 'value';
-
-    if (this.props.field.dynamic) {
-      key =
-        (this.props.field as DynamicRelationField).relatedValueKey ||
-        (this.props.field as DynamicRelationField).relatedPrimaryKey ||
-        key;
-    }
-
-    return key;
-  }
-
-  private fetchReferenceValue(data: ValueType): void {
-    const { referenceValueGetter } = this.props.field as DynamicRelationField;
-
-    if (!referenceValueGetter) {
-      return;
-    }
-
-    referenceValueGetter(data).then(result => {
-      if (result.success) {
-        this.setState({ internalValue: result.data });
-      }
-    });
+    return this.$$_h.getValueKey();
   }
 
   protected fetchRelatedList(
     params: RequestParams,
-    success: ResponseSuccess = noop,
-    fail: ResponseFail = noop,
+    success?: ResponseSuccess,
+    fail?: ResponseFail,
   ): void {
-    const { dynamic, relatedListGetter } = this.props.field as DynamicRelationField;
-
-    if (!dynamic || !relatedListGetter) {
-      return;
-    }
-
-    relatedListGetter(params).then(result => {
-      if (result.success) {
-        success(result.data, result.extra, result);
-      } else {
-        fail(result.message, result);
-      }
-    });
+    this.$$_h.fetchRelatedList(params, success, fail);
   }
 
   public componentWillMount(): void {
@@ -77,7 +48,11 @@ export default class RelationFieldHeadlessWidget<
     }
 
     if (this.props.field.dynamic) {
-      this.on('dataChange', dataSource => this.fetchReferenceValue(dataSource));
+      this.on('dataChange', dataSource =>
+        this.$$_h.fetchReferenceValue(dataSource, ({ data }) =>
+          this.setState({ internalValue: data }),
+        ),
+      );
     }
   }
 }

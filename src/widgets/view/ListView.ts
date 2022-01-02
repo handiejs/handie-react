@@ -1,23 +1,24 @@
+import { ListValue, ListViewContext, SearchContext } from '@handie/runtime-core';
 import {
-  ListViewContext,
-  SearchContext,
+  ListViewWidgetConfig,
   ListViewWidgetState,
-  getBehaviorByKey,
-} from '@handie/runtime-core';
+  ListViewHeadlessWidget as _ListViewHeadlessWidget,
+} from '@handie/runtime-core/dist/widgets';
 
 import ViewHeadlessWidget from './View';
 
-export default class ListViewHeadlessWidget extends ViewHeadlessWidget<
-  ListViewContext,
-  ListViewWidgetState
-> {
+export default class ListViewHeadlessWidget<
+  S extends ListViewWidgetState = ListViewWidgetState,
+  CT extends ListViewWidgetConfig = ListViewWidgetConfig,
+  VT extends ListValue = ListValue
+> extends ViewHeadlessWidget<ListViewContext<VT, CT>, S, CT, _ListViewHeadlessWidget<CT>> {
   public readonly state = {
     loading: false,
     dataSource: [],
     pageNum: 1,
     pageSize: 20,
     total: 0,
-  };
+  } as any;
 
   /**
    * Access the injected search context
@@ -27,8 +28,7 @@ export default class ListViewHeadlessWidget extends ViewHeadlessWidget<
   }
 
   private initPagenation(): void {
-    const defaultPageSize =
-      this.config.defaultPageSize || getBehaviorByKey('common.view.listViewDefaultPageSize', 20);
+    const defaultPageSize = this.$$_h.getDefaultPageSize();
 
     this.setState({ pageSize: defaultPageSize });
 

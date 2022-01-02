@@ -1,22 +1,29 @@
 import {
   EventHandlers,
   EventHandler,
-  ConfigType,
   FilterDescriptor,
-  SearchDescriptor,
   SearchCondition,
   SearchContext,
   ListViewContext,
-  SearchWidgetState,
   isFunction,
 } from '@handie/runtime-core';
+import {
+  SearchWidgetConfig,
+  SearchWidgetState,
+  ISearchWidget,
+  SearchHeadlessWidget as _SearchHeadlessWidget,
+} from '@handie/runtime-core/dist/widgets';
 
 import { getEventWithNamespace, resolveBindEvent } from '../../utils';
-import BaseHeadlessWidget from '../base/Base';
+import BaseHeadlessWidget from '../base';
 
-export default class SearchHeadlessWidget extends BaseHeadlessWidget<
-  {},
+export default class SearchHeadlessWidget<
+  CT extends SearchWidgetConfig = SearchWidgetConfig
+> extends BaseHeadlessWidget<
+  ISearchWidget,
   SearchWidgetState,
+  CT,
+  _SearchHeadlessWidget<CT>,
   ListViewContext
 > {
   public readonly state = { condition: {} } as SearchWidgetState;
@@ -27,10 +34,6 @@ export default class SearchHeadlessWidget extends BaseHeadlessWidget<
 
   protected get filters(): FilterDescriptor[] {
     return this.$$search ? this.$$search.getFilters() : [];
-  }
-
-  protected get config(): ConfigType {
-    return (this.$$view.getSearch() as SearchDescriptor).config || {};
   }
 
   protected on(event: string | EventHandlers, handler?: EventHandler): void {

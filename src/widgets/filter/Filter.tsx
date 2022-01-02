@@ -1,17 +1,18 @@
+import { ListViewContext, SearchContext } from '@handie/runtime-core';
 import {
-  ConfigType,
-  ListViewContext,
-  SearchContext,
-  FilterWidgetProps,
-  includes,
-} from '@handie/runtime-core';
+  FilterWidgetConfig,
+  IFilterWidget,
+  FilterHeadlessWidget as _FilterHeadlessWidget,
+} from '@handie/runtime-core/dist/widgets';
 
-import BaseHeadlessWidget from '../base/Base';
+import BaseHeadlessWidget from '../base';
 
 export default class FilterHeadlessWidget<
   ValueType = any,
+  CT extends FilterWidgetConfig = FilterWidgetConfig,
+  HW extends _FilterHeadlessWidget<ValueType, CT> = _FilterHeadlessWidget<ValueType, CT>,
   S extends Record<string, any> = {}
-> extends BaseHeadlessWidget<FilterWidgetProps<ValueType>, S, ListViewContext> {
+> extends BaseHeadlessWidget<IFilterWidget<ValueType>, S, CT, HW, ListViewContext> {
   /**
    * Access the injected search context
    */
@@ -19,34 +20,12 @@ export default class FilterHeadlessWidget<
     return this.context.searchContext;
   }
 
-  protected get config(): ConfigType {
-    return this.props.filter.config || {};
-  }
-
   protected get showValidationRulesAsNative(): boolean {
-    return this.getCommonBehavior('filter.showValidationRulesAsNative', false);
+    return this.$$_h.isValidationRulesShownAsNative();
   }
 
   protected getPlaceholder(): string {
-    let { showHintAsPlaceholder } = this.config;
-
-    if (showHintAsPlaceholder === undefined) {
-      showHintAsPlaceholder = this.getCommonBehavior('filter.showHintAsPlaceholder');
-    }
-
-    const { filter } = this.props;
-
-    let defaultPlaceholder: string = '';
-
-    if (filter.dataType) {
-      defaultPlaceholder = `${
-        includes(filter.dataType, ['string', 'text', 'int', 'float']) ? '请输入' : '请选择'
-      }${filter.label || filter.name}`;
-    }
-
-    const placeholder = filter.placeholder || defaultPlaceholder;
-
-    return showHintAsPlaceholder ? filter.hint || placeholder : placeholder;
+    return this.$$_h.getPlaceholder();
   }
 
   protected onChange(value: ValueType): void {

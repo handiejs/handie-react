@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 import {
   ClientAction,
   isFunction,
@@ -13,7 +15,11 @@ import {
   EnumField,
   MultiEnumField,
 } from '@handie/runtime-core/dist/types/input';
-import { ReactNode } from 'react';
+import {
+  TableViewWidgetConfig,
+  ListViewWidgetState,
+  ListViewHeadlessWidget as _ListViewHeadlessWidget,
+} from '@handie/runtime-core/dist/widgets';
 
 import { ComponentCtor } from '../../types/component';
 import { getEventWithNamespace } from '../../utils';
@@ -23,7 +29,10 @@ import { resolveTopActions, resolveTableProps } from './helper';
 import defaultBehaviors from './behavior';
 import ListViewHeadlessWidget from './ListView';
 
-export default class TableViewHeadlessWidget extends ListViewHeadlessWidget {
+export default class TableViewHeadlessWidget<
+  S extends ListViewWidgetState = ListViewWidgetState,
+  CT extends TableViewWidgetConfig = TableViewWidgetConfig
+> extends ListViewHeadlessWidget<S, CT> {
   private tableProps: DataTableProps = {} as any;
 
   protected get searchable(): boolean {
@@ -124,11 +133,6 @@ export default class TableViewHeadlessWidget extends ListViewHeadlessWidget {
     } else {
       this.$$view.load();
     }
-  }
-
-  constructor(props: Record<string, any>) {
-    super(props);
-    this.setBehaviors('view.table', defaultBehaviors);
   }
 
   public componentWillMount(): void {

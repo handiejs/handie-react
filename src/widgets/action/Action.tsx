@@ -1,10 +1,9 @@
+import { ConfigType, getControl } from '@handie/runtime-core';
 import {
-  ConfigType,
-  ActionWidgetProps,
   ActionWidgetState,
-  getControl,
-  executeClientAction,
-} from '@handie/runtime-core';
+  IActionWidget,
+  ActionHeadlessWidget as _ActionHeadlessWidget,
+} from '@handie/runtime-core/dist/widgets';
 
 import { ReactNode, JSXElementConstructor } from 'react';
 
@@ -12,42 +11,24 @@ import BaseHeadlessWidget from '../base/Base';
 
 export default class ActionHeadlessWidget<
   S extends ActionWidgetState = ActionWidgetState
-> extends BaseHeadlessWidget<ActionWidgetProps, S> {
+> extends BaseHeadlessWidget<IActionWidget, S, ConfigType, _ActionHeadlessWidget> {
   public readonly state = { disabled: false } as S;
 
-  protected get config(): ConfigType {
-    return this.props.action.config || {};
-  }
-
   protected resolveContent(): ReactNode[] | string {
-    const text = this.props.action.text || '';
+    return this.$$_h.renderContent((iconRef, text, iconOnly) => {
+      const Icon = getControl('Icon') as JSXElementConstructor<any>;
+      const children: ReactNode[] = [<Icon refs={iconRef} />];
 
-    let { showIcon, iconOnly, icon } = this.config;
+      if (!iconOnly) {
+        children.push(<span>{text}</span>);
+      }
 
-    if (showIcon === undefined) {
-      showIcon = this.getCommonBehavior('action.showIcon');
-    }
-
-    if (iconOnly === undefined) {
-      iconOnly = this.getCommonBehavior('action.iconOnly');
-    }
-
-    if (!showIcon || !icon) {
-      return text;
-    }
-
-    const Icon = getControl('Icon') as JSXElementConstructor<any>;
-    const children: ReactNode[] = [<Icon refs={icon} />];
-
-    if (!iconOnly) {
-      children.push(<span>{text}</span>);
-    }
-
-    return children;
+      return children;
+    });
   }
 
   protected onExecute(): void {
-    executeClientAction(this.$$view, this.props.action);
+    this.$$_h.execute(this.$$view);
   }
 
   public componentWillMount(): void {

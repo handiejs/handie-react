@@ -1,10 +1,13 @@
-import { ObjectViewContext, ObjectViewWidgetState } from '@handie/runtime-core';
+import { ObjectValue, ObjectViewContext } from '@handie/runtime-core';
+import { ViewWidgetConfig, ObjectViewWidgetState } from '@handie/runtime-core/dist/widgets';
 
 import ViewHeadlessWidget from './View';
 
 export default class ObjectViewHeadlessWidget<
-  S extends ObjectViewWidgetState = ObjectViewWidgetState
-> extends ViewHeadlessWidget<ObjectViewContext, S> {
+  S extends ObjectViewWidgetState = ObjectViewWidgetState,
+  CT extends ViewWidgetConfig = ViewWidgetConfig,
+  VT extends ObjectValue = ObjectValue
+> extends ViewHeadlessWidget<ObjectViewContext<VT, CT>, S, CT> {
   public readonly state = {
     loading: false,
     dataSource: {},

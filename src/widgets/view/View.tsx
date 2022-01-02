@@ -1,24 +1,23 @@
+import { ViewFieldDescriptor, ViewContext } from '@handie/runtime-core';
 import {
-  ConfigType,
-  ViewFieldDescriptor,
-  ViewContext,
+  ViewWidgetConfig,
   ViewWidgetState,
-} from '@handie/runtime-core';
+  IViewWidget,
+  ViewHeadlessWidget as _ViewHeadlessWidget,
+} from '@handie/runtime-core/dist/widgets';
 
-import BaseHeadlessWidget from '../base/Base';
+import BaseHeadlessWidget from '../base';
 
 export default class ViewHeadlessWidget<
   ViewContextType extends ViewContext = ViewContext,
-  S extends ViewWidgetState = ViewWidgetState
-> extends BaseHeadlessWidget<{}, S, ViewContextType> {
+  S extends ViewWidgetState = ViewWidgetState,
+  CT extends ViewWidgetConfig = ViewWidgetConfig,
+  HW extends _ViewHeadlessWidget<CT> = _ViewHeadlessWidget<CT>
+> extends BaseHeadlessWidget<IViewWidget, S, CT, HW, ViewContextType> {
   public readonly state = { loading: false } as S;
 
   protected get fields(): ViewFieldDescriptor[] {
     return this.$$view.getFields();
-  }
-
-  protected get config(): ConfigType {
-    return this.$$view.getConfig() || {};
   }
 
   public componentWillMount(): void {
