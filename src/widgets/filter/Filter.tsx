@@ -1,6 +1,7 @@
 import {
   ListViewContext,
   SearchContext,
+  BaseWidgetState,
   FilterWidgetConfig,
   IFilterWidget,
 } from '@handie/runtime-core';
@@ -12,7 +13,7 @@ class FilterStructuralWidget<
   ValueType = any,
   CT extends FilterWidgetConfig = FilterWidgetConfig,
   HW extends FilterHeadlessWidget<ValueType, CT> = FilterHeadlessWidget<ValueType, CT>,
-  S extends Record<string, any> = {}
+  S extends BaseWidgetState = BaseWidgetState
 > extends BaseStructuralWidget<IFilterWidget<ValueType>, S, CT, HW, ListViewContext> {
   /**
    * Access the injected search context

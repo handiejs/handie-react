@@ -5,18 +5,14 @@ import { FieldStructuralWidget } from './Field';
 
 class BaseEnumFieldStructuralWidget<
   ValueType,
+  S extends EnumFieldWidgetState = EnumFieldWidgetState,
   CT extends EnumFieldWidgetConfig = EnumFieldWidgetConfig
-> extends FieldStructuralWidget<
-  ValueType,
-  CT,
-  EnumFieldHeadlessWidget<ValueType, CT>,
-  EnumFieldWidgetState
-> {
+> extends FieldStructuralWidget<ValueType, CT, EnumFieldHeadlessWidget<ValueType, CT>, S> {
   public readonly state = {
     internalOptions: [],
     options: [],
     optionMap: {},
-  } as EnumFieldWidgetState;
+  } as any;
 
   public componentWillMount(): void {
     this.setHeadlessWidget(new EnumFieldHeadlessWidget(this.props, this.$$view));

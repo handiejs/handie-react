@@ -3,9 +3,10 @@ import { Component } from 'react';
 import {
   EventHandlers,
   EventHandler,
-  ConfigType,
   ModuleContext,
   ViewContext,
+  BaseWidgetConfig,
+  BaseWidgetState,
 } from '@handie/runtime-core';
 import { BaseHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
@@ -16,8 +17,8 @@ type WidgetBehaviors = { [key: string]: any };
 
 class BaseStructuralWidget<
   P extends Record<string, any> = {},
-  S extends Record<string, any> = {},
-  C extends ConfigType = ConfigType,
+  S extends BaseWidgetState = BaseWidgetState,
+  C extends BaseWidgetConfig = BaseWidgetConfig,
   H extends BaseHeadlessWidget<P, C> = BaseHeadlessWidget<P, C>,
   V extends ViewContext = ViewContext
 > extends Component<P, S> {

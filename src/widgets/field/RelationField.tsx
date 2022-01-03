@@ -14,13 +14,9 @@ import { FieldStructuralWidget } from './Field';
 
 class RelationFieldStructuralWidget<
   ValueType = ObjectValue | ListValue,
+  S extends RelationFieldWidgetState<ValueType> = RelationFieldWidgetState<ValueType>,
   CT extends FieldWidgetConfig = FieldWidgetConfig
-> extends FieldStructuralWidget<
-  ValueType,
-  CT,
-  RelationFieldHeadlessWidget<ValueType, CT>,
-  RelationFieldWidgetState<ValueType>
-> {
+> extends FieldStructuralWidget<ValueType, CT, RelationFieldHeadlessWidget<ValueType, CT>, S> {
   protected get labelKey(): string {
     return this.$$_h.getLabelKey();
   }

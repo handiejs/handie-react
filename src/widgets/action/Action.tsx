@@ -11,8 +11,8 @@ import { ReactNode, JSXElementConstructor } from 'react';
 import { BaseStructuralWidget } from '../base';
 
 class ActionStructuralWidget<
-  CT extends ActionWidgetConfig = ActionWidgetConfig,
-  S extends ActionWidgetState = ActionWidgetState
+  S extends ActionWidgetState = ActionWidgetState,
+  CT extends ActionWidgetConfig = ActionWidgetConfig
 > extends BaseStructuralWidget<IActionWidget<CT>, S, CT, ActionHeadlessWidget<CT>> {
   public readonly state = { disabled: false } as S;
 

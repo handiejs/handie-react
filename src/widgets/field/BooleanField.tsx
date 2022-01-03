@@ -1,11 +1,12 @@
-import { BooleanFieldWidgetConfig } from '@handie/runtime-core';
+import { BaseWidgetState, BooleanFieldWidgetConfig } from '@handie/runtime-core';
 import { BooleanFieldHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
 import { FieldStructuralWidget } from './Field';
 
 class BooleanFieldStructuralWidget<
+  S extends BaseWidgetState = BaseWidgetState,
   CT extends BooleanFieldWidgetConfig = BooleanFieldWidgetConfig
-> extends FieldStructuralWidget<boolean, CT, BooleanFieldHeadlessWidget<CT>> {
+> extends FieldStructuralWidget<boolean, CT, BooleanFieldHeadlessWidget<CT>, S> {
   protected get positiveLabel(): string {
     return this.$$_h.getPositiveLabel();
   }

@@ -16,15 +16,10 @@ import { getEventWithNamespace, resolveBindEvent } from '../../utils';
 import { BaseStructuralWidget } from '../base';
 
 class SearchStructuralWidget<
+  S extends SearchWidgetState = SearchWidgetState,
   CT extends SearchWidgetConfig = SearchWidgetConfig
-> extends BaseStructuralWidget<
-  ISearchWidget,
-  SearchWidgetState,
-  CT,
-  SearchHeadlessWidget<CT>,
-  ListViewContext
-> {
-  public readonly state = { condition: {} } as SearchWidgetState;
+> extends BaseStructuralWidget<ISearchWidget, S, CT, SearchHeadlessWidget<CT>, ListViewContext> {
+  public readonly state = { condition: {} } as S;
 
   protected get $$search(): SearchContext {
     return this.context.searchContext;

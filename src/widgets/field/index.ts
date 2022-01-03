@@ -1,4 +1,4 @@
-export * from './Field';
+export * from './UnknownField';
 export * from './BooleanField';
 export * from './StringField';
 export * from './TextField';

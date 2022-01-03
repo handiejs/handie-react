@@ -1,6 +1,7 @@
 import {
   ValueChecker,
   ObjectViewContext,
+  BaseWidgetState,
   FieldWidgetConfig,
   IFieldWidget,
 } from '@handie/runtime-core';
@@ -12,7 +13,7 @@ class FieldStructuralWidget<
   ValueType = any,
   CT extends FieldWidgetConfig = FieldWidgetConfig,
   HW extends FieldHeadlessWidget<ValueType, CT> = FieldHeadlessWidget<ValueType, CT>,
-  S extends Record<string, any> = {}
+  S extends BaseWidgetState = BaseWidgetState
 > extends BaseStructuralWidget<IFieldWidget<ValueType>, S, CT, HW, ObjectViewContext> {
   protected get showValidationRulesAsNative(): boolean {
     return this.$$_h.isValidationRulesShownAsNative(
