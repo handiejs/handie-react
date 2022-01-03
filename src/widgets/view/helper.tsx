@@ -6,7 +6,7 @@ import {
   ColumnContext,
   CellComponentRenderer,
   TableColumn,
-  TableViewConfig,
+  TableViewWidgetConfig,
   isBoolean,
   isNumber,
   isFunction,
@@ -174,7 +174,7 @@ function resolveOperationColumn(
     },
   };
 
-  const { operationColumnWidth } = context.getConfig() as TableViewConfig;
+  const { operationColumnWidth } = context.getConfig() as TableViewWidgetConfig;
 
   if (operationColumnWidth) {
     col.width = isNumber(operationColumnWidth)

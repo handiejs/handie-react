@@ -1,18 +1,19 @@
-import { ListViewContext, SearchContext } from '@handie/runtime-core';
 import {
+  ListViewContext,
+  SearchContext,
   FilterWidgetConfig,
   IFilterWidget,
-  FilterHeadlessWidget as _FilterHeadlessWidget,
-} from '@handie/runtime-core/dist/widgets';
+} from '@handie/runtime-core';
+import { FilterHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
-import BaseHeadlessWidget from '../base';
+import { BaseStructuralWidget } from '../base';
 
-export default class FilterHeadlessWidget<
+class FilterStructuralWidget<
   ValueType = any,
   CT extends FilterWidgetConfig = FilterWidgetConfig,
-  HW extends _FilterHeadlessWidget<ValueType, CT> = _FilterHeadlessWidget<ValueType, CT>,
+  HW extends FilterHeadlessWidget<ValueType, CT> = FilterHeadlessWidget<ValueType, CT>,
   S extends Record<string, any> = {}
-> extends BaseHeadlessWidget<IFilterWidget<ValueType>, S, CT, HW, ListViewContext> {
+> extends BaseStructuralWidget<IFilterWidget<ValueType>, S, CT, HW, ListViewContext> {
   /**
    * Access the injected search context
    */
@@ -32,3 +33,5 @@ export default class FilterHeadlessWidget<
     this.props.onChange(value);
   }
 }
+
+export { FilterStructuralWidget };

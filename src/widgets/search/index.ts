@@ -1,1 +1,1 @@
-export { default as SearchHeadlessWidget } from './Search';
+export * from './Search';

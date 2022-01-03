@@ -1,8 +1,10 @@
-import { isNumeric } from '@handie/runtime-core';
+import { EnumFieldWidgetConfig, isNumeric } from '@handie/runtime-core';
 
-import BaseEnumFieldHeadlessWidget from './BaseEnumField';
+import { BaseEnumFieldStructuralWidget } from './BaseEnumField';
 
-export default class EnumFieldHeadlessWidget extends BaseEnumFieldHeadlessWidget<number | string> {
+class EnumFieldStructuralWidget<
+  CT extends EnumFieldWidgetConfig = EnumFieldWidgetConfig
+> extends BaseEnumFieldStructuralWidget<number | string, CT> {
   protected get displayText(): string {
     const chosen = this.state.options.find(opt =>
       isNumeric(opt.value) && isNumeric(this.props.value)
@@ -13,3 +15,5 @@ export default class EnumFieldHeadlessWidget extends BaseEnumFieldHeadlessWidget
     return chosen ? chosen.label : '';
   }
 }
+
+export { EnumFieldStructuralWidget };

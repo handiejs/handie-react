@@ -1,8 +1,9 @@
-import BaseEnumFieldHeadlessWidget from './BaseEnumField';
+import { EnumFieldWidgetConfig } from '@handie/runtime-core';
+import { BaseEnumFieldStructuralWidget } from './BaseEnumField';
 
-export default class MultiEnumFieldHeadlessWidget extends BaseEnumFieldHeadlessWidget<
-  number[] | string[]
-> {
+class MultiEnumFieldStructuralWidget<
+  CT extends EnumFieldWidgetConfig = EnumFieldWidgetConfig
+> extends BaseEnumFieldStructuralWidget<number[] | string[], CT> {
   protected get displayText(): string {
     return ((this.props.value || []) as any[])
       .map(value =>
@@ -11,3 +12,5 @@ export default class MultiEnumFieldHeadlessWidget extends BaseEnumFieldHeadlessW
       .join('、');
   }
 }
+
+export { MultiEnumFieldStructuralWidget };

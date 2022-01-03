@@ -1,18 +1,19 @@
-import { ValueChecker, ObjectViewContext } from '@handie/runtime-core';
 import {
+  ValueChecker,
+  ObjectViewContext,
   FieldWidgetConfig,
   IFieldWidget,
-  FieldHeadlessWidget as _FieldHeadlessWidget,
-} from '@handie/runtime-core/dist/widgets';
+} from '@handie/runtime-core';
+import { FieldHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
-import BaseHeadlessWidget from '../base';
+import { BaseStructuralWidget } from '../base';
 
-export default class FieldHeadlessWidget<
+class FieldStructuralWidget<
   ValueType = any,
   CT extends FieldWidgetConfig = FieldWidgetConfig,
-  HW extends _FieldHeadlessWidget<ValueType, CT> = _FieldHeadlessWidget<ValueType, CT>,
+  HW extends FieldHeadlessWidget<ValueType, CT> = FieldHeadlessWidget<ValueType, CT>,
   S extends Record<string, any> = {}
-> extends BaseHeadlessWidget<IFieldWidget<ValueType>, S, CT, HW, ObjectViewContext> {
+> extends BaseStructuralWidget<IFieldWidget<ValueType>, S, CT, HW, ObjectViewContext> {
   protected get showValidationRulesAsNative(): boolean {
     return this.$$_h.isValidationRulesShownAsNative(
       this.$$view.getConfig().showFieldValidationRulesAsNative,
@@ -27,7 +28,7 @@ export default class FieldHeadlessWidget<
     this.$$view.setFieldChecker(this.props.field.name, checker);
   }
 
-  protected formatValue(value: ValueType): string {
+  protected formatValue(value: ValueType = this.props.value): string {
     return this.$$_h.format(value);
   }
 
@@ -35,3 +36,5 @@ export default class FieldHeadlessWidget<
     this.props.onChange(value);
   }
 }
+
+export { FieldStructuralWidget };

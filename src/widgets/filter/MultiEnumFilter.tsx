@@ -1,8 +1,6 @@
-import BaseEnumFilterHeadlessWidget from './BaseEnumFilter';
+import { BaseEnumFilterStructuralWidget } from './BaseEnumFilter';
 
-export default class MultiEnumFilterHeadlessWidget extends BaseEnumFilterHeadlessWidget<
-  number[] | string[]
-> {
+class MultiEnumFilterStructuralWidget extends BaseEnumFilterStructuralWidget<number[] | string[]> {
   protected get displayText(): string {
     return ((this.props.value || []) as any[])
       .map(value =>
@@ -11,3 +9,5 @@ export default class MultiEnumFilterHeadlessWidget extends BaseEnumFilterHeadles
       .join('、');
   }
 }
+
+export { MultiEnumFilterStructuralWidget };

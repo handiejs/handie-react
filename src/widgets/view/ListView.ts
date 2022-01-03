@@ -1,17 +1,19 @@
-import { ListValue, ListViewContext, SearchContext } from '@handie/runtime-core';
 import {
+  ListValue,
+  ListViewContext,
+  SearchContext,
   ListViewWidgetConfig,
   ListViewWidgetState,
-  ListViewHeadlessWidget as _ListViewHeadlessWidget,
-} from '@handie/runtime-core/dist/widgets';
+} from '@handie/runtime-core';
+import { ListViewHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
-import ViewHeadlessWidget from './View';
+import { ViewStructuralWidget } from './View';
 
-export default class ListViewHeadlessWidget<
+class ListViewStructuralWidget<
   S extends ListViewWidgetState = ListViewWidgetState,
   CT extends ListViewWidgetConfig = ListViewWidgetConfig,
   VT extends ListValue = ListValue
-> extends ViewHeadlessWidget<ListViewContext<VT, CT>, S, CT, _ListViewHeadlessWidget<CT>> {
+> extends ViewStructuralWidget<ListViewContext<VT, CT>, S, CT, ListViewHeadlessWidget<CT>> {
   public readonly state = {
     loading: false,
     dataSource: [],
@@ -39,6 +41,7 @@ export default class ListViewHeadlessWidget<
   public componentWillMount(): void {
     super.componentWillMount();
 
+    this.setHeadlessWidget(new ListViewHeadlessWidget(this.props, this.$$view));
     this.initPagenation();
 
     this.on({
@@ -49,3 +52,5 @@ export default class ListViewHeadlessWidget<
     });
   }
 }
+
+export { ListViewStructuralWidget };

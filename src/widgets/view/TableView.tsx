@@ -2,6 +2,8 @@ import { ReactNode } from 'react';
 
 import {
   ClientAction,
+  TableViewWidgetConfig,
+  ListViewWidgetState,
   isFunction,
   isEnumField,
   getControl,
@@ -15,24 +17,19 @@ import {
   EnumField,
   MultiEnumField,
 } from '@handie/runtime-core/dist/types/input';
-import {
-  TableViewWidgetConfig,
-  ListViewWidgetState,
-  ListViewHeadlessWidget as _ListViewHeadlessWidget,
-} from '@handie/runtime-core/dist/widgets';
 
 import { ComponentCtor } from '../../types/component';
 import { getEventWithNamespace } from '../../utils';
 
 import { DataTableProps } from './typing';
-import { resolveTopActions, resolveTableProps } from './helper';
 import defaultBehaviors from './behavior';
-import ListViewHeadlessWidget from './ListView';
+import { resolveTopActions, resolveTableProps } from './helper';
+import { ListViewStructuralWidget } from './ListView';
 
-export default class TableViewHeadlessWidget<
+class TableViewStructuralWidget<
   S extends ListViewWidgetState = ListViewWidgetState,
   CT extends TableViewWidgetConfig = TableViewWidgetConfig
-> extends ListViewHeadlessWidget<S, CT> {
+> extends ListViewStructuralWidget<S, CT> {
   private tableProps: DataTableProps = {} as any;
 
   protected get searchable(): boolean {
@@ -53,7 +50,7 @@ export default class TableViewHeadlessWidget<
     return this.searchable ? (
       <div
         className={this.getStyleClassName('TableView-search')}
-        key='SearchOfTableViewHeadlessWidget'
+        key='SearchOfTableViewStructuralWidget'
       >
         {SearchRenderer ? <SearchRenderer /> : null}
       </div>
@@ -64,7 +61,7 @@ export default class TableViewHeadlessWidget<
     return this.topActions.length > 0 ? (
       <div
         className={this.getStyleClassName('TableView-tableActions')}
-        key='ActionBarOfTableViewHeadlessWidget'
+        key='ActionBarOfTableViewStructuralWidget'
       >
         {this.topActions.map(({ config = {}, ...others }) => {
           const ActionRenderer = getRenderer('ActionRenderer') as ComponentCtor;
@@ -89,7 +86,7 @@ export default class TableViewHeadlessWidget<
 
     return (
       <DataTable
-        key='DataTableOfTableViewHeadlessWidget'
+        key='DataTableOfTableViewStructuralWidget'
         {...this.tableProps}
         className={this.getStyleClassName('TableView-dataTable')}
         dataSource={state.dataSource}
@@ -138,6 +135,8 @@ export default class TableViewHeadlessWidget<
   public componentWillMount(): void {
     super.componentWillMount();
 
+    this.setBehaviors('view.table', defaultBehaviors);
+
     this.tableProps = resolveTableProps(
       this.$$view,
       this.accessible,
@@ -164,3 +163,5 @@ export default class TableViewHeadlessWidget<
     }
   }
 }
+
+export { TableViewStructuralWidget };

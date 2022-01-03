@@ -1,15 +1,12 @@
-import {
-  FilterWidgetConfig,
-  EnumFilterWidgetState,
-  EnumFilterHeadlessWidget,
-} from '@handie/runtime-core/dist/widgets';
+import { FilterWidgetConfig, EnumFilterWidgetState } from '@handie/runtime-core';
+import { EnumFilterHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
-import FilterHeadlessWidget from './Filter';
+import { FilterStructuralWidget } from './Filter';
 
-export default class BaseEnumFilterHeadlessWidget<
+class BaseEnumFilterStructuralWidget<
   ValueType,
   CT extends FilterWidgetConfig = FilterWidgetConfig
-> extends FilterHeadlessWidget<
+> extends FilterStructuralWidget<
   ValueType,
   CT,
   EnumFilterHeadlessWidget<ValueType, CT>,
@@ -18,6 +15,8 @@ export default class BaseEnumFilterHeadlessWidget<
   public readonly state = { options: [], optionMap: {} } as EnumFilterWidgetState;
 
   public componentWillMount(): void {
+    this.setHeadlessWidget(new EnumFilterHeadlessWidget(this.props, this.$$view));
+
     this.$$_h.initOptions(this.$$view, options =>
       this.setState({
         options,
@@ -26,3 +25,5 @@ export default class BaseEnumFilterHeadlessWidget<
     );
   }
 }
+
+export { BaseEnumFilterStructuralWidget };

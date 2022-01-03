@@ -1,13 +1,18 @@
-import { ObjectValue, ObjectViewContext } from '@handie/runtime-core';
-import { ViewWidgetConfig, ObjectViewWidgetState } from '@handie/runtime-core/dist/widgets';
+import {
+  ObjectValue,
+  ObjectViewContext,
+  ViewWidgetConfig,
+  ObjectViewWidgetState,
+} from '@handie/runtime-core';
+import { ViewHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
-import ViewHeadlessWidget from './View';
+import { ViewStructuralWidget } from './View';
 
-export default class ObjectViewHeadlessWidget<
+class ObjectViewStructuralWidget<
   S extends ObjectViewWidgetState = ObjectViewWidgetState,
   CT extends ViewWidgetConfig = ViewWidgetConfig,
   VT extends ObjectValue = ObjectValue
-> extends ViewHeadlessWidget<ObjectViewContext<VT, CT>, S, CT> {
+> extends ViewStructuralWidget<ObjectViewContext<VT, CT>, S, CT> {
   public readonly state = {
     loading: false,
     dataSource: {},
@@ -22,6 +27,7 @@ export default class ObjectViewHeadlessWidget<
   public componentWillMount(): void {
     super.componentWillMount();
 
+    this.setHeadlessWidget(new ViewHeadlessWidget(this.props, this.$$view));
     this.setState({ value: this.$$view.getValue() });
 
     this.on({
@@ -35,3 +41,5 @@ export default class ObjectViewHeadlessWidget<
     });
   }
 }
+
+export { ObjectViewStructuralWidget };

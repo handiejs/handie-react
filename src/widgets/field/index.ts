@@ -1,8 +1,8 @@
-export { default as FieldHeadlessWidget } from './Field';
-export { default as BooleanFieldHeadlessWidget } from './BooleanField';
-export { default as StringFieldHeadlessWidget } from './StringField';
-export { default as TextFieldHeadlessWidget } from './TextField';
-export { default as IntegerFieldHeadlessWidget } from './IntegerField';
-export { default as EnumFieldHeadlessWidget } from './EnumField';
-export { default as MultiEnumFieldHeadlessWidget } from './MultiEnumField';
-export { default as RelationFieldHeadlessWidget } from './RelationField';
+export * from './Field';
+export * from './BooleanField';
+export * from './StringField';
+export * from './TextField';
+export * from './IntegerField';
+export * from './EnumField';
+export * from './MultiEnumField';
+export * from './RelationField';

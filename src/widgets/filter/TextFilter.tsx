@@ -1,5 +1,11 @@
-import { FilterHeadlessWidget as _FilterHeadlessWidget } from '@handie/runtime-core/dist/widgets';
+import { FilterHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
-import FilterHeadlessWidget from './Filter';
+import { FilterStructuralWidget } from './Filter';
 
-export default class TextFilterHeadlessWidget extends FilterHeadlessWidget<string> {}
+class TextFilterStructuralWidget extends FilterStructuralWidget<string> {
+  public componentWillMount(): void {
+    this.setHeadlessWidget(new FilterHeadlessWidget(this.props, this.$$view));
+  }
+}
+
+export { TextFilterStructuralWidget };

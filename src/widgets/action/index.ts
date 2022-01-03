@@ -1,1 +1,1 @@
-export { default as ActionHeadlessWidget } from './Action';
+export * from './Action';

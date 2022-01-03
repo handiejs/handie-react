@@ -1,20 +1,22 @@
-import { ConfigType, getControl } from '@handie/runtime-core';
 import {
   ActionWidgetState,
+  ActionWidgetConfig,
   IActionWidget,
-  ActionHeadlessWidget as _ActionHeadlessWidget,
-} from '@handie/runtime-core/dist/widgets';
+  getControl,
+} from '@handie/runtime-core';
+import { ActionHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
 import { ReactNode, JSXElementConstructor } from 'react';
 
-import BaseHeadlessWidget from '../base/Base';
+import { BaseStructuralWidget } from '../base';
 
-export default class ActionHeadlessWidget<
+class ActionStructuralWidget<
+  CT extends ActionWidgetConfig = ActionWidgetConfig,
   S extends ActionWidgetState = ActionWidgetState
-> extends BaseHeadlessWidget<IActionWidget, S, ConfigType, _ActionHeadlessWidget> {
+> extends BaseStructuralWidget<IActionWidget<CT>, S, CT, ActionHeadlessWidget<CT>> {
   public readonly state = { disabled: false } as S;
 
-  protected resolveContent(): ReactNode[] | string {
+  protected renderContent(): ReactNode[] | string {
     return this.$$_h.renderContent((iconRef, text, iconOnly) => {
       const Icon = getControl('Icon') as JSXElementConstructor<any>;
       const children: ReactNode[] = [<Icon refs={iconRef} />];
@@ -32,6 +34,8 @@ export default class ActionHeadlessWidget<
   }
 
   public componentWillMount(): void {
+    this.setHeadlessWidget(new ActionHeadlessWidget(this.props, this.$$view));
+
     const {
       disableWhenNoSelection = this.getCommonBehavior('action.disableWhenNoSelection', true),
     } = this.config;
@@ -52,3 +56,5 @@ export default class ActionHeadlessWidget<
     }
   }
 }
+
+export { ActionStructuralWidget };

@@ -4,23 +4,21 @@ import {
   ResponseFail,
   ObjectValue,
   ListValue,
-} from '@handie/runtime-core';
-import { DynamicRelationField } from '@handie/runtime-core/dist/types/input';
-import {
   FieldWidgetConfig,
   RelationFieldWidgetState,
-  RelationFieldHeadlessWidget as _RelationFieldHeadlessWidget,
-} from '@handie/runtime-core/dist/widgets';
+} from '@handie/runtime-core';
+import { DynamicRelationField } from '@handie/runtime-core/dist/types/input';
+import { RelationFieldHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
-import FieldHeadlessWidget from './Field';
+import { FieldStructuralWidget } from './Field';
 
-export default class RelationFieldHeadlessWidget<
+class RelationFieldStructuralWidget<
   ValueType = ObjectValue | ListValue,
   CT extends FieldWidgetConfig = FieldWidgetConfig
-> extends FieldHeadlessWidget<
+> extends FieldStructuralWidget<
   ValueType,
   CT,
-  _RelationFieldHeadlessWidget<ValueType, CT>,
+  RelationFieldHeadlessWidget<ValueType, CT>,
   RelationFieldWidgetState<ValueType>
 > {
   protected get labelKey(): string {
@@ -40,6 +38,8 @@ export default class RelationFieldHeadlessWidget<
   }
 
   public componentWillMount(): void {
+    this.setHeadlessWidget(new RelationFieldHeadlessWidget(this.props, this.$$view));
+
     if (
       !this.props.field.dynamic ||
       !(this.props.field as DynamicRelationField).referenceValueGetter
@@ -56,3 +56,5 @@ export default class RelationFieldHeadlessWidget<
     }
   }
 }
+
+export { RelationFieldStructuralWidget };

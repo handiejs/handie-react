@@ -1,16 +1,12 @@
-import { isString } from '@handie/runtime-core';
-import {
-  EnumFieldWidgetConfig,
-  EnumFieldWidgetState,
-  EnumFieldHeadlessWidget,
-} from '@handie/runtime-core/dist/widgets';
+import { EnumFieldWidgetConfig, EnumFieldWidgetState, isString } from '@handie/runtime-core';
+import { EnumFieldHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
-import FieldHeadlessWidget from './Field';
+import { FieldStructuralWidget } from './Field';
 
-export default class BaseEnumFieldHeadlessWidget<
+class BaseEnumFieldStructuralWidget<
   ValueType,
   CT extends EnumFieldWidgetConfig = EnumFieldWidgetConfig
-> extends FieldHeadlessWidget<
+> extends FieldStructuralWidget<
   ValueType,
   CT,
   EnumFieldHeadlessWidget<ValueType, CT>,
@@ -23,6 +19,8 @@ export default class BaseEnumFieldHeadlessWidget<
   } as EnumFieldWidgetState;
 
   public componentWillMount(): void {
+    this.setHeadlessWidget(new EnumFieldHeadlessWidget(this.props, this.$$view));
+
     this.$$_h.initOptions(this.$$view, (options, resolveRenderOptions) => {
       this.setState({
         internalOptions: options,
@@ -36,3 +34,5 @@ export default class BaseEnumFieldHeadlessWidget<
     });
   }
 }
+
+export { BaseEnumFieldStructuralWidget };

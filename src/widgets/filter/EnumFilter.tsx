@@ -1,10 +1,8 @@
 import { isNumeric } from '@handie/runtime-core';
 
-import BaseEnumFilterHeadlessWidget from './BaseEnumFilter';
+import { BaseEnumFilterStructuralWidget } from './BaseEnumFilter';
 
-export default class EnumFilterHeadlessWidget extends BaseEnumFilterHeadlessWidget<
-  number | string
-> {
+class EnumFilterStructuralWidget extends BaseEnumFilterStructuralWidget<number | string> {
   protected get displayText(): string {
     const chosen = this.state.options.find(opt =>
       isNumeric(opt.value) && isNumeric(this.props.value)
@@ -15,3 +13,5 @@ export default class EnumFilterHeadlessWidget extends BaseEnumFilterHeadlessWidg
     return chosen ? chosen.label : '';
   }
 }
+
+export { EnumFilterStructuralWidget };

@@ -7,18 +7,18 @@ import {
   ModuleContext,
   ViewContext,
 } from '@handie/runtime-core';
-import { BaseHeadlessWidget as _BaseHeadlessWidget } from '@handie/runtime-core/dist/widgets';
+import { BaseHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
 import { generateWidgetId, getEventWithNamespace, resolveBindEvent } from '../../utils';
 import ViewReactContext from '../../contexts/view';
 
 type WidgetBehaviors = { [key: string]: any };
 
-export default class BaseHeadlessWidget<
+class BaseStructuralWidget<
   P extends Record<string, any> = {},
   S extends Record<string, any> = {},
   C extends ConfigType = ConfigType,
-  H extends _BaseHeadlessWidget<P, C> = _BaseHeadlessWidget<P, C>,
+  H extends BaseHeadlessWidget<P, C> = BaseHeadlessWidget<P, C>,
   V extends ViewContext = ViewContext
 > extends Component<P, S> {
   static contextType = ViewReactContext;
@@ -50,6 +50,14 @@ export default class BaseHeadlessWidget<
     return this.$$_h.getConfig();
   }
 
+  protected setHeadlessWidget(hw: H): void {
+    this.$$_h = hw;
+  }
+
+  protected setBehaviors(keyInTheme: string, options: WidgetBehaviors): void {
+    this.$$_h.setBehaviors(keyInTheme, options);
+  }
+
   protected getBehavior(path: string): any {
     return this.$$_h.getBehavior(path);
   }
@@ -66,26 +74,6 @@ export default class BaseHeadlessWidget<
     return (this.__style || {})[className] || '';
   }
 
-  protected setup({
-    headless,
-    style,
-    behavior,
-  }: {
-    headless: H;
-    style?: Record<string, any>;
-    behavior?: { key: string; options: WidgetBehaviors };
-  }): void {
-    this.$$_h = headless;
-
-    if (style) {
-      this.setStyleClassNames(style);
-    }
-
-    if (behavior) {
-      this.$$_h.setBehaviors(behavior.key, behavior.options);
-    }
-  }
-
   protected on(event: string | EventHandlers, handler?: EventHandler): void {
     this.$$view.on(resolveBindEvent(this, event), handler);
   }
@@ -98,3 +86,5 @@ export default class BaseHeadlessWidget<
     this.off();
   }
 }
+
+export { BaseStructuralWidget };

@@ -5,25 +5,23 @@ import {
   SearchCondition,
   SearchContext,
   ListViewContext,
-  isFunction,
-} from '@handie/runtime-core';
-import {
   SearchWidgetConfig,
   SearchWidgetState,
   ISearchWidget,
-  SearchHeadlessWidget as _SearchHeadlessWidget,
-} from '@handie/runtime-core/dist/widgets';
+  isFunction,
+} from '@handie/runtime-core';
+import { SearchHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
 import { getEventWithNamespace, resolveBindEvent } from '../../utils';
-import BaseHeadlessWidget from '../base';
+import { BaseStructuralWidget } from '../base';
 
-export default class SearchHeadlessWidget<
+class SearchStructuralWidget<
   CT extends SearchWidgetConfig = SearchWidgetConfig
-> extends BaseHeadlessWidget<
+> extends BaseStructuralWidget<
   ISearchWidget,
   SearchWidgetState,
   CT,
-  _SearchHeadlessWidget<CT>,
+  SearchHeadlessWidget<CT>,
   ListViewContext
 > {
   public readonly state = { condition: {} } as SearchWidgetState;
@@ -61,6 +59,8 @@ export default class SearchHeadlessWidget<
   }
 
   public componentWillMount(): void {
+    this.setHeadlessWidget(new SearchHeadlessWidget(this.props, this.$$view));
+
     let condition = this.$$search.getDefaultValue();
 
     // FIXME: 临时做法
@@ -84,3 +84,5 @@ export default class SearchHeadlessWidget<
     });
   }
 }
+
+export { SearchStructuralWidget };
