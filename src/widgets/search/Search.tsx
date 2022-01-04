@@ -9,6 +9,8 @@ import {
   SearchWidgetState,
   ISearchWidget,
   isFunction,
+  noop,
+  getAppHelper,
 } from '@handie/runtime-core';
 import { SearchHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
@@ -20,6 +22,9 @@ class SearchStructuralWidget<
   CT extends SearchWidgetConfig = SearchWidgetConfig
 > extends BaseStructuralWidget<ISearchWidget, S, CT, SearchHeadlessWidget<CT>, ListViewContext> {
   public readonly state = { condition: {} } as S;
+
+  private conditionStateInited: boolean = false;
+  private conditionStateCallback: () => void = noop;
 
   protected get $$search(): SearchContext {
     return this.context.searchContext;
@@ -38,7 +43,13 @@ class SearchStructuralWidget<
   }
 
   protected initCondition(condition: SearchCondition = {}): void {
-    this.$$search.setValue({ ...this.state.condition, ...condition });
+    const callback = () => this.$$search.setValue({ ...this.state.condition, ...condition });
+
+    if (this.conditionStateInited) {
+      callback();
+    } else {
+      this.conditionStateCallback = callback;
+    }
   }
 
   protected setFilterValue(name: string, value: any): void {
@@ -65,17 +76,26 @@ class SearchStructuralWidget<
       condition = {
         ...condition,
         ...(isFunction(searchInitialValue)
-          ? searchInitialValue(this.$$view, this)
+          ? searchInitialValue(this.$$view, getAppHelper())
           : searchInitialValue),
       };
     }
 
-    this.setState({ condition });
+    this.setState({ condition }, () => {
+      if (this.conditionStateInited) {
+        return;
+      }
+
+      this.conditionStateCallback();
+
+      this.conditionStateInited = true;
+      this.conditionStateCallback = noop;
+    });
 
     this.on({
       change: value => this.setState({ condition: { ...value } }),
       filterChange: ({ name, value }) =>
-        this.setState({ condition: { ...this.state.condition, [name]: value } }),
+        this.setState(state => ({ condition: { ...state.condition, [name]: value } })),
     });
   }
 }
