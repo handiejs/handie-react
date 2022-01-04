@@ -4,22 +4,12 @@ import {
   ClientAction,
   TableViewWidgetConfig,
   ListViewWidgetState,
-  isFunction,
-  isEnumField,
   getControl,
   getRenderer,
   getBehaviorByKey,
-  cacheDynamicEnumOptions,
-  getCachedEnumOptions,
 } from '@handie/runtime-core';
-import {
-  EnumFieldOptionGetter,
-  EnumField,
-  MultiEnumField,
-} from '@handie/runtime-core/dist/types/input';
 
 import { ComponentCtor } from '../../types/component';
-import { getEventWithNamespace } from '../../utils';
 
 import { DataTableProps } from './typing';
 import defaultBehaviors from './behavior';
@@ -102,36 +92,6 @@ class TableViewStructuralWidget<
     );
   }
 
-  private loadTableData(): void {
-    const moduleName = this.$$module.getModuleName();
-    const needCacheDynamicEnumFields = this.fields.filter(
-      field =>
-        isEnumField(field) &&
-        isFunction((field as EnumField | MultiEnumField).options) &&
-        !getCachedEnumOptions(moduleName, field),
-    );
-
-    // 有动态选项的枚举字段时先发相关 HTTP 请求并将结果缓存，
-    // 以避免表格渲染时发出很多相关 HTTP 请求
-    if (needCacheDynamicEnumFields.length > 0) {
-      Promise.all(
-        needCacheDynamicEnumFields.map(field =>
-          ((field as EnumField | MultiEnumField).options as EnumFieldOptionGetter)(),
-        ),
-      ).then(results => {
-        results.forEach((result, idx) => {
-          if (result.success) {
-            cacheDynamicEnumOptions(moduleName, needCacheDynamicEnumFields[idx], result.data);
-          }
-        });
-
-        this.$$view.load();
-      });
-    } else {
-      this.$$view.load();
-    }
-  }
-
   public componentWillMount(): void {
     super.componentWillMount();
 
@@ -143,24 +103,6 @@ class TableViewStructuralWidget<
       this,
       this.getBehavior('inlineButtonActionSize'),
     );
-
-    const searchContext = this.$$search;
-
-    if (searchContext && !searchContext.isReady()) {
-      searchContext.on(getEventWithNamespace(this, 'ready'), () => this.loadTableData());
-    } else {
-      this.loadTableData();
-    }
-  }
-
-  public componentWillUnmount(): void {
-    super.componentWillMount();
-
-    const searchContext = this.$$search;
-
-    if (searchContext) {
-      searchContext.off(getEventWithNamespace(this, 'ready'));
-    }
   }
 }
 
