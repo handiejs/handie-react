@@ -3,10 +3,12 @@ import { Component } from 'react';
 import {
   EventHandlers,
   EventHandler,
+  AppHelper,
   ModuleContext,
   ViewContext,
   BaseWidgetConfig,
   BaseWidgetState,
+  getAppHelper,
 } from '@handie/runtime-core';
 import { BaseHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
@@ -32,6 +34,8 @@ class BaseStructuralWidget<
    * Headless widget instance
    */
   protected $$_h!: H;
+
+  protected $$app!: AppHelper;
 
   /**
    * Access the injected view context
@@ -81,6 +85,11 @@ class BaseStructuralWidget<
 
   protected off(event?: string, handler?: EventHandler): void {
     this.$$view.off(getEventWithNamespace(this, event), handler);
+  }
+
+  constructor(props) {
+    super(props);
+    this.$$app = getAppHelper();
   }
 
   public componentWillUnmount(): void {
