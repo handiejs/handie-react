@@ -3,7 +3,7 @@ import { FieldHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
 import { FieldStructuralWidget } from './Field';
 
-class UnknownFieldStructuralWidget<
+class UntypedFieldStructuralWidget<
   VT extends DataValue = DataValue,
   S extends BaseWidgetState = BaseWidgetState,
   CT extends FieldWidgetConfig = FieldWidgetConfig
@@ -13,4 +13,4 @@ class UnknownFieldStructuralWidget<
   }
 }
 
-export { UnknownFieldStructuralWidget };
+export { UntypedFieldStructuralWidget };
