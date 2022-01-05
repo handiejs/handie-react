@@ -89,9 +89,9 @@ class FormSearchStructuralWidget<
     }
   }
 
-  protected renderFilters(): ReactNode[] {
+  protected renderFilters(filters: FilterDescriptor[] = this.filters): ReactNode[] {
     const formChildren: ReactNode[] = renderFormFieldNodes(
-      this.filters,
+      filters,
       this.config.arrangement,
       this.renderFilter.bind(this),
       this.renderFilterRow.bind(this),
