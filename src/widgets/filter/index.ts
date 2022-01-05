@@ -3,3 +3,4 @@ export * from './StringFilter';
 export * from './TextFilter';
 export * from './EnumFilter';
 export * from './MultiEnumFilter';
+export * from './UntypedFilter';
