@@ -1,8 +1,7 @@
 import {
-  ClientAction,
   ActionRendererProps,
-  ActionWidgetProps,
-  capitalize,
+  IActionWidget,
+  toPascalCase,
   getBehaviorByKey,
   resolveWidgetCtor,
 } from '@handie/runtime-core';
@@ -23,10 +22,10 @@ export default class ActionRenderer extends BaseRenderer<ActionRendererProps> {
       this.$$view.getModuleContext(),
       action.widget,
       () =>
-        `${capitalize(
+        `${toPascalCase(
           action.renderType || getBehaviorByKey('common.action.renderType') || '',
         )}ActionWidget`,
-    ) as JSXElementConstructor<ActionWidgetProps>;
+    ) as JSXElementConstructor<IActionWidget>;
 
     return ActionRenderer ? <ActionWidget action={action} /> : null;
   }

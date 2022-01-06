@@ -14,8 +14,8 @@ class FormViewStructuralWidget<
   S extends ObjectViewWidgetState = ObjectViewWidgetState,
   CT extends ViewWidgetConfig = ViewWidgetConfig
 > extends ObjectViewStructuralWidget<S, CT> {
-  protected getRecordId() {
-    return '';
+  protected getRecordId(): string {
+    return this.$$app.history.getLocation().params.id || '';
   }
 
   protected renderForm(
@@ -37,15 +37,20 @@ class FormViewStructuralWidget<
   }
 
   public componentDidMount(): void {
-    const ctx = this.context;
+    const ctx = this.$$view;
     const id = this.getRecordId();
 
     if (id && ctx.getOne) {
       ctx.getOne(id, data => {
         this.setState({ dataSource: data });
-        this.context.setValue(data);
+        ctx.setValue(data);
       });
     }
+  }
+
+  public componentWillUnmount(): void {
+    super.componentWillUnmount();
+    this.$$view.reset();
   }
 }
 

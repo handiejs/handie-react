@@ -11,7 +11,7 @@ import BaseRenderer from '../base';
 
 export default class FilterRenderer extends BaseRenderer<FilterRendererProps> {
   private handleFilterChange(value: any): void {
-    this.props.onChange(this.props.filter.name, value);
+    this.props.onChange!(this.props.filter.name, value);
   }
 
   public render(): ReactNode {
