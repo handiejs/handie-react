@@ -1,37 +1,28 @@
-import { ActionWidgetState, omit } from '@handie/runtime-core';
+import { ReactNode } from 'react';
+import { ActionWidgetState, omit, getControl } from '@handie/runtime-core';
 
+import { ComponentCtor } from '../../types/component';
+
+import { resolveControlProps } from './helper';
 import { ActionStructuralWidget } from './Action';
 
 class IconActionStructuralWidget<
   S extends ActionWidgetState = ActionWidgetState
 > extends ActionStructuralWidget<S> {
   protected resolveProps(): Record<string, any> {
-    const props = omit(this.config, ['showIcon', 'iconOnly', 'icon', 'refs']);
-    const classNames: string[] = ['ActionWidget', 'IconActionWidget'];
+    const props: Record<string, any> = {};
 
-    const { icon, className } = this.config;
-
-    if (icon) {
-      props.refs = icon;
+    if (this.config.icon) {
+      props.refs = this.config.icon;
     }
-
-    const { primary, danger } = this.props.action;
-
-    if (primary) {
-      classNames.push('IconActionWidget--primary');
-    }
-
-    if (danger) {
-      classNames.push('IconActionWidget--danger');
-    }
-
-    if (className) {
-      classNames.push(className);
-    }
-
-    props.className = classNames.join(' ');
 
     return props;
+  }
+
+  protected renderIcon(props: Record<string, any> = {}): ReactNode {
+    const Icon = getControl('Icon') as ComponentCtor;
+
+    return Icon ? <Icon {...resolveControlProps(this.resolveProps(), props)} /> : null;
   }
 }
 

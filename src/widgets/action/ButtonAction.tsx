@@ -1,6 +1,10 @@
-import { ActionWidgetState } from '@handie/runtime-core';
+import { ReactNode } from 'react';
+import { ActionWidgetState, getControl } from '@handie/runtime-core';
 
+import { ComponentCtor } from '../../types/component';
 import { ButtonActionWidgetConfig } from '../../types/widget';
+
+import { resolveControlProps } from './helper';
 import { ActionStructuralWidget } from './Action';
 
 class ButtonActionStructuralWidget<
@@ -9,17 +13,7 @@ class ButtonActionStructuralWidget<
 > extends ActionStructuralWidget<S, C> {
   protected resolveProps(): Record<string, any> {
     const { primary, danger } = this.props.action;
-
-    const classNames: string[] = ['ActionWidget', 'ButtonActionWidget'];
-
-    if (this.config.className) {
-      classNames.push(this.config.className);
-    }
-
-    const props: Record<string, any> = {
-      className: classNames.join(' '),
-      disabled: this.state.disabled,
-    };
+    const props: Record<string, any> = { disabled: this.state.disabled };
 
     if (this.config.size) {
       props.size = this.config.size;
@@ -34,6 +28,14 @@ class ButtonActionStructuralWidget<
     }
 
     return props;
+  }
+
+  protected renderButton(props: Record<string, any> = {}): ReactNode {
+    const Button = getControl('Button') as ComponentCtor;
+
+    return Button ? (
+      <Button {...resolveControlProps(this.resolveProps(), props)}>{this.renderContent()}</Button>
+    ) : null;
   }
 }
 

@@ -16,6 +16,10 @@ class ActionStructuralWidget<
 > extends BaseStructuralWidget<IActionWidget<CT>, S, CT, ActionHeadlessWidget<CT>> {
   public readonly state = { disabled: false } as S;
 
+  protected resolveClassNames(className?: string): string {
+    return ['ActionWidget', className, this.config.className].filter(cls => !!cls).join(' ');
+  }
+
   protected renderContent(): ReactNode[] | string {
     return this.$$_h.renderContent((iconRef, text, iconOnly) => {
       const Icon = getControl('Icon') as JSXElementConstructor<any>;
