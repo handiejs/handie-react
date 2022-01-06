@@ -9,7 +9,7 @@ import {
   getBehaviorByKey,
 } from '@handie/runtime-core';
 
-import { ComponentCtor } from '../../types/component';
+import { ComponentCtor } from '../../../types/component';
 
 import { DataTableProps } from './typing';
 import defaultBehaviors from './behavior';

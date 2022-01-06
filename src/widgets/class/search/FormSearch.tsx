@@ -9,8 +9,8 @@ import {
   renderFormFieldNodes,
 } from '@handie/runtime-core';
 
-import { ComponentCtor } from '../../types/component';
-import { FormSearchWidgetConfig } from '../../types/widget';
+import { ComponentCtor } from '../../../types/component';
+import { FormSearchWidgetConfig } from '../../../types/widget';
 
 import defaultBehaviors from './behavior';
 import { SearchStructuralWidget } from './Search';

@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import { ActionWidgetState, getControl } from '@handie/runtime-core';
 
-import { ComponentCtor } from '../../types/component';
-import { ButtonActionWidgetConfig } from '../../types/widget';
+import { ComponentCtor } from '../../../types/component';
+import { ButtonActionWidgetConfig } from '../../../types/widget';
 
 import { resolveControlProps } from './helper';
 import { ActionStructuralWidget } from './Action';

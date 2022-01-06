@@ -16,7 +16,7 @@ import {
 } from '@handie/runtime-core/dist/types/input';
 import { ListViewHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
-import { getEventWithNamespace } from '../../utils';
+import { getEventWithNamespace } from '../../../utils';
 import { ViewStructuralWidget } from './View';
 
 class ListViewStructuralWidget<

@@ -7,7 +7,7 @@ import {
   getRenderer,
 } from '@handie/runtime-core';
 
-import { ComponentCtor } from '../../types/component';
+import { ComponentCtor } from '../../../types/component';
 import { ObjectViewStructuralWidget } from './ObjectView';
 
 class FormViewStructuralWidget<

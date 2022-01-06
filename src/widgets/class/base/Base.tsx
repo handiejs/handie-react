@@ -11,8 +11,8 @@ import {
 } from '@handie/runtime-core';
 import { BaseHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
-import { generateWidgetId, getEventWithNamespace, resolveBindEvent } from '../../utils';
-import ViewReactContext from '../../contexts/view';
+import { generateWidgetId, getEventWithNamespace, resolveBindEvent } from '../../../utils';
+import ViewReactContext from '../../../contexts/view';
 
 type WidgetBehaviors = { [key: string]: any };
 
