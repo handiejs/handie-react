@@ -18,6 +18,18 @@ class FormViewStructuralWidget<
     return this.$$app.history.getLocation().params.id || '';
   }
 
+  protected fetchData(): void {
+    const ctx = this.$$view;
+    const id = this.getRecordId();
+
+    if (id && ctx.getOne) {
+      ctx.getOne(id, data => {
+        this.setState({ dataSource: data });
+        ctx.setValue(data);
+      });
+    }
+  }
+
   protected renderForm(
     options: { readonly?: boolean; fields?: ViewFieldDescriptor[] } = {},
   ): ReactNode {
@@ -34,18 +46,6 @@ class FormViewStructuralWidget<
         onChange={this.onFieldValueChange.bind(this)}
       />
     ) : null;
-  }
-
-  public componentDidMount(): void {
-    const ctx = this.$$view;
-    const id = this.getRecordId();
-
-    if (id && ctx.getOne) {
-      ctx.getOne(id, data => {
-        this.setState({ dataSource: data });
-        ctx.setValue(data);
-      });
-    }
   }
 
   public componentWillUnmount(): void {
