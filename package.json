@@ -31,19 +31,18 @@
   },
   "homepage": "https://www.yuque.com/handie",
   "scripts": {
-    "prebuild": "rimraf dist && mv tsconfig.json tsconfig-tmp.json && node build",
+    "prebuild": "rimraf dist",
     "build": "tsc",
-    "postbuild": "rimraf tsconfig.json && mv tsconfig-tmp.json tsconfig.json",
     "prerelease": "npm run build",
     "release": "npm publish"
   },
   "peerDependencies": {
-    "petals-ui": "^0.0.17",
+    "petals-ui": "~0.0.17",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "dependencies": {
-    "@handie/runtime-core": "0.0.2"
+    "@handie/runtime-core": "0.0.3"
   },
   "devDependencies": {
     "@ntks/eslint-config": "0.0.0",
