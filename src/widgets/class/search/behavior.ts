@@ -4,6 +4,7 @@ export default {
   formLayout: 'inline',
   formControlLabelWidth: '',
   formControlSize: 'medium',
+  hideFormControlLabel: false,
   searchable: true,
   resettable: true,
   actionsStandalone: false,

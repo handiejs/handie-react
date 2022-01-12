@@ -25,7 +25,7 @@ class FormSearchStructuralWidget<
 
     return FormField ? (
       <FormField
-        label={this.config.hideFormControlLabel !== true ? filter.label : undefined}
+        label={!this.isFormControlLabelHidden() ? filter.label : undefined}
         key={`${filter.name}FilterOfFormSearchStructuralWidget`}
       >
         {FilterRenderer ? (
@@ -71,6 +71,12 @@ class FormSearchStructuralWidget<
     return isBoolean(this.config.resettable)
       ? this.config.resettable!
       : this.getBehavior('resettable') === true;
+  }
+
+  protected isFormControlLabelHidden(): boolean {
+    return isBoolean(this.config.hideFormControlLabel)
+      ? this.config.hideFormControlLabel!
+      : this.getBehavior('hideFormControlLabel') === true;
   }
 
   protected handleSearch(evt: any): void {
