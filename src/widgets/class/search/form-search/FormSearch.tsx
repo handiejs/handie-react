@@ -9,11 +9,11 @@ import {
   renderFormChildren,
 } from '@handie/runtime-core';
 
-import { ComponentCtor } from '../../../types/component';
-import { FormSearchWidgetConfig } from '../../../types/widget';
+import { ComponentCtor } from '../../../../types/component';
+import { FormSearchWidgetConfig } from '../../../../types/widget';
 
+import { SearchStructuralWidget } from '../search/Search';
 import defaultBehaviors from './behavior';
-import { SearchStructuralWidget } from './Search';
 
 class FormSearchStructuralWidget<
   S extends SearchWidgetState = SearchWidgetState,

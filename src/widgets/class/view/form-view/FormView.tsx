@@ -7,8 +7,8 @@ import {
   getRenderer,
 } from '@handie/runtime-core';
 
-import { ComponentCtor } from '../../../types/component';
-import { ObjectViewStructuralWidget } from './ObjectView';
+import { ComponentCtor } from '../../../../types/component';
+import { ObjectViewStructuralWidget } from '../object-view';
 
 class FormViewStructuralWidget<
   S extends ObjectViewWidgetState = ObjectViewWidgetState,

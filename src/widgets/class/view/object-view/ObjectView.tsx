@@ -6,7 +6,7 @@ import {
 } from '@handie/runtime-core';
 import { ViewHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
-import { ViewStructuralWidget } from './View';
+import { ViewStructuralWidget } from '../view';
 
 class ObjectViewStructuralWidget<
   S extends ObjectViewWidgetState = ObjectViewWidgetState,

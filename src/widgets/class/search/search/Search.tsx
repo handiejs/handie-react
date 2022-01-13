@@ -14,8 +14,8 @@ import {
 } from '@handie/runtime-core';
 import { SearchHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
-import { getEventWithNamespace, resolveBindEvent } from '../../../utils';
-import { BaseStructuralWidget } from '../base';
+import { getEventWithNamespace, resolveBindEvent } from '../../../../utils';
+import { BaseStructuralWidget } from '../../base';
 
 class SearchStructuralWidget<
   S extends SearchWidgetState = SearchWidgetState,

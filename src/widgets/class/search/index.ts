@@ -1,2 +1,2 @@
-export * from './Search';
-export * from './FormSearch';
+export * from './search';
+export * from './form-search';

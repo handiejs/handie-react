@@ -1,3 +1,4 @@
+import { ReactNode, Component } from 'react';
 import {
   ClientAction,
   ViewFieldDescriptor,
@@ -15,11 +16,10 @@ import {
   getControl,
   getRenderer,
 } from '@handie/runtime-core';
-import { ReactNode, Component } from 'react';
 
-import { ComponentCtor } from '../../../types/component';
-import { isComponentCtor } from '../../../utils';
-import ViewReactContext from '../../../contexts/view';
+import { ComponentCtor } from '../../../../types/component';
+import { isComponentCtor } from '../../../../utils';
+import ViewReactContext from '../../../../contexts/view';
 import { DataTableProps } from './typing';
 
 function createCellRenderer(

@@ -25,6 +25,18 @@ export default class FormRenderer extends BaseRenderer<FormRendererProps> {
     return !!runExpression({ value: this.props.value }, expression, defaultReturnValue);
   }
 
+  private resolveFormLayout(): 'horizontal' | 'vertical' | 'inline' {
+    const { config, behavior } = this.props;
+
+    if (config.formLayout) {
+      return config.formLayout;
+    }
+
+    return behavior && behavior.formLayout
+      ? behavior.formLayout
+      : getBehaviorByKey('common.view.objectViewFormLayout', 'horizontal');
+  }
+
   private resolveReadonly(readonly?: boolean | ContextExpression): boolean {
     if (isBoolean(readonly)) {
       return readonly as boolean;
@@ -153,7 +165,10 @@ export default class FormRenderer extends BaseRenderer<FormRendererProps> {
 
   private renderFieldGroup(title: string, formFieldNodes: ReactNode[]): ReactNode {
     return (
-      <div className='HandieFormRenderer-group'>
+      <div
+        className='HandieFormRenderer-group'
+        key={`${title}${formFieldNodes.length}FieldGroupOfFormRenderer`}
+      >
         <div className='HandieFormRenderer-groupHeader'>{title}</div>
         <div className='HandieFormRenderer-groupBody'>{formFieldNodes}</div>
       </div>
@@ -166,6 +181,7 @@ export default class FormRenderer extends BaseRenderer<FormRendererProps> {
     return FormControl ? (
       <FormControl
         className={normalizeClassName('HandieFormRenderer', this.props.className)}
+        layout={this.resolveFormLayout()}
         labelOption={{ width: this.resolveLabelWidth(), align: 'right' }}
         controlSize={this.resolveFormControlSize()}
         hideMessage={!this.resolveShowValidationMessage()}

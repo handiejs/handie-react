@@ -9,12 +9,12 @@ import {
   getBehaviorByKey,
 } from '@handie/runtime-core';
 
-import { ComponentCtor } from '../../../types/component';
+import { ComponentCtor } from '../../../../types/component';
+import { ListViewStructuralWidget } from '../list-view';
 
 import { DataTableProps } from './typing';
 import defaultBehaviors from './behavior';
 import { resolveTopActions, resolveTableProps } from './helper';
-import { ListViewStructuralWidget } from './ListView';
 
 class TableViewStructuralWidget<
   S extends ListViewWidgetState = ListViewWidgetState,

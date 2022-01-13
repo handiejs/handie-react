@@ -7,7 +7,7 @@ import {
 } from '@handie/runtime-core';
 import { ViewHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
-import { BaseStructuralWidget } from '../base';
+import { BaseStructuralWidget } from '../../base';
 
 class ViewStructuralWidget<
   ViewContextType extends ViewContext = ViewContext,
