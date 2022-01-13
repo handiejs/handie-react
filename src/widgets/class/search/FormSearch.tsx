@@ -6,7 +6,7 @@ import {
   isNumber,
   getControl,
   getRenderer,
-  renderFormFieldNodes,
+  renderFormChildren,
 } from '@handie/runtime-core';
 
 import { ComponentCtor } from '../../../types/component';
@@ -39,15 +39,19 @@ class FormSearchStructuralWidget<
     ) : null;
   }
 
-  private renderFilterRow(filters: FilterDescriptor[], index: number): ReactNode {
+  private renderFilterRow(filters: FilterDescriptor[]): ReactNode {
     return (
       <div
         className={this.getStyleClassName('FormSearch-filterRow')}
-        key={`FilterRow${index}OfFormSearchStructuralWidget`}
+        key={`FilterRow${filters[0].name}OfFormSearchStructuralWidget`}
       >
         {filters.map(filter => this.renderFilter(filter))}
       </div>
     );
+  }
+
+  private renderFilterGroup(title: string, formFieldNodes: ReactNode[]): ReactNode {
+    return <>{formFieldNodes}</>;
   }
 
   protected resolveLabelWidth(): string {
@@ -96,9 +100,10 @@ class FormSearchStructuralWidget<
   }
 
   protected renderFilters(filters: FilterDescriptor[] = this.filters): ReactNode[] {
-    const formChildren: ReactNode[] = renderFormFieldNodes(
+    const formChildren: ReactNode[] = renderFormChildren(
       filters,
       this.config.arrangement,
+      this.renderFilterGroup.bind(this),
       this.renderFilter.bind(this),
       this.renderFilterRow.bind(this),
     );

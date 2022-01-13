@@ -1,6 +1,7 @@
 import {
   ContextExpression,
   ViewFieldDescriptor,
+  GridBreakpoint,
   FormRendererProps,
   isBoolean,
   isString,
@@ -9,7 +10,8 @@ import {
   getControl,
   getBehaviorByKey,
   resolveFieldBehavior,
-  renderFormFieldNodes,
+  renderFormChildren,
+  normalizeClassName,
 } from '@handie/runtime-core';
 
 import { ReactNode } from 'react';
@@ -120,17 +122,26 @@ export default class FormRenderer extends BaseRenderer<FormRendererProps> {
     ) : null;
   }
 
-  private renderFieldRow(fields: ViewFieldDescriptor[], fakeIndex: number): ReactNode {
+  private renderFieldRow(
+    fields: ViewFieldDescriptor[],
+    cols: GridBreakpoint[] | number,
+  ): ReactNode {
     const GridRow = getControl('GridRow') as ComponentCtor;
     const GridCol = getControl('GridCol') as ComponentCtor;
 
+    let span: number | undefined;
+
+    if (isNumber(cols) && cols > -1) {
+      span = 24 / fields.length;
+    }
+
     return GridRow ? (
-      <GridRow key={`FieldRow${fakeIndex}OfFormRenderer`} gutter={24}>
-        {fields.map(field =>
+      <GridRow key={`FieldRow${fields[0].name}OfFormRenderer`} gutter={24}>
+        {fields.map((field, index) =>
           GridCol ? (
             <GridCol
               key={`FieldCol${field.name}OfFormRenderer`}
-              span={fakeIndex > -1 ? 24 / fields.length : undefined}
+              {...(isNumber(cols) ? { span } : cols[index])}
             >
               {this.renderField(field)}
             </GridCol>
@@ -140,21 +151,31 @@ export default class FormRenderer extends BaseRenderer<FormRendererProps> {
     ) : null;
   }
 
+  private renderFieldGroup(title: string, formFieldNodes: ReactNode[]): ReactNode {
+    return (
+      <div className='HandieFormRenderer-group'>
+        <div className='HandieFormRenderer-groupHeader'>{title}</div>
+        <div className='HandieFormRenderer-groupBody'>{formFieldNodes}</div>
+      </div>
+    );
+  }
+
   public render(): ReactNode {
     const FormControl = getControl('Form') as ComponentCtor;
 
     return FormControl ? (
       <FormControl
-        className={this.props.className}
+        className={normalizeClassName('HandieFormRenderer', this.props.className)}
         labelOption={{ width: this.resolveLabelWidth(), align: 'right' }}
         controlSize={this.resolveFormControlSize()}
         hideMessage={!this.resolveShowValidationMessage()}
       >
-        {renderFormFieldNodes(
+        {renderFormChildren(
           this.props.fields.filter(
             ({ available }) => !isString(available) || this.isTrue(available!, false),
           ),
           (this.props.config || {}).arrangement,
+          this.renderFieldGroup.bind(this),
           this.renderField.bind(this),
           this.renderFieldRow.bind(this),
         )}
