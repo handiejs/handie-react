@@ -23,10 +23,14 @@ class FormViewStructuralWidget<
     const id = this.getRecordId();
 
     if (id && ctx.getOne) {
-      ctx.getOne(id, data => {
-        this.setState({ dataSource: data });
-        ctx.setValue(data);
-      });
+      this.$$view.setBusy(true);
+
+      ctx
+        .getOne(id, data => {
+          this.setState({ dataSource: data });
+          ctx.setValue(data);
+        })
+        .finally(() => this.$$view.setBusy(false));
     }
   }
 
