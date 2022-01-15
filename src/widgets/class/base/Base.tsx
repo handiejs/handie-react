@@ -81,11 +81,15 @@ class BaseStructuralWidget<
   }
 
   protected on(event: string | EventHandlers, handler?: EventHandler): void {
-    this.$$view.on(resolveBindEvent(this, event), handler);
+    if (this.$$view) {
+      this.$$view.on(resolveBindEvent(this, event), handler);
+    }
   }
 
   protected off(event?: string, handler?: EventHandler): void {
-    this.$$view.off(getEventWithNamespace(this, event), handler);
+    if (this.$$view) {
+      this.$$view.off(getEventWithNamespace(this, event), handler);
+    }
   }
 
   public componentWillUnmount(): void {
