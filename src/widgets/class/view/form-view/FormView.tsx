@@ -34,21 +34,44 @@ class FormViewStructuralWidget<
     }
   }
 
+  protected renderActionBar(className?: string): ReactNode {
+    return (
+      <div className={className} key='ActionBarOfFormViewStructuralWidget'>
+        {this.$$view.getActions().map(action => {
+          const ActionRenderer = getRenderer('ActionRenderer') as ComponentCtor;
+
+          return ActionRenderer ? (
+            <ActionRenderer key={action.name || action.text} action={action} />
+          ) : null;
+        })}
+      </div>
+    );
+  }
+
   protected renderForm(
-    options: { readonly?: boolean; fields?: ViewFieldDescriptor[] } = {},
+    options: {
+      className?: string;
+      readonly?: boolean;
+      fields?: ViewFieldDescriptor[];
+      children?: ReactNode;
+    } = {},
   ): ReactNode {
-    const { readonly = false, fields = this.fields } = options;
+    const { className, readonly = false, fields = this.fields, children = null } = options;
     const FormRenderer = getRenderer('FormRenderer') as ComponentCtor;
 
     return FormRenderer ? (
       <FormRenderer
+        className={className}
         fields={fields}
+        actions={this.$$view.getActions()}
         value={this.state.value}
         validation={this.state.validation}
         config={this.config}
         readonly={readonly}
         onChange={this.onFieldValueChange.bind(this)}
-      />
+      >
+        {children}
+      </FormRenderer>
     ) : null;
   }
 

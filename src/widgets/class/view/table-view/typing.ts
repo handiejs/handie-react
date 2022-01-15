@@ -2,9 +2,11 @@ import { TableColumn } from '@handie/runtime-core';
 
 type DataTableProps = { columns: TableColumn[]; hidePagination?: boolean };
 
+type ButtonSize = 'large' | 'medium' | 'small';
+
 interface TableViewWidgetBehaviors {
-  topButtonActionSize?: 'large' | 'medium' | 'small';
-  inlineButtonActionSize?: 'large' | 'medium' | 'small';
+  readonly topButtonActionSize?: ButtonSize;
+  readonly inlineButtonActionSize?: ButtonSize;
 }
 
 export { DataTableProps, TableViewWidgetBehaviors };

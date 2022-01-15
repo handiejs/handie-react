@@ -177,6 +177,7 @@ export default class FormRenderer extends BaseRenderer<FormRendererProps> {
 
   public render(): ReactNode {
     const FormControl = getControl('Form') as ComponentCtor;
+    const FormField = getControl('FormField') as ComponentCtor;
 
     return FormControl ? (
       <FormControl
@@ -195,6 +196,9 @@ export default class FormRenderer extends BaseRenderer<FormRendererProps> {
           this.renderField.bind(this),
           this.renderFieldRow.bind(this),
         )}
+        {this.props.children && FormField ? (
+          <FormField label=' '>{this.props.children}</FormField>
+        ) : null}
       </FormControl>
     ) : null;
   }
