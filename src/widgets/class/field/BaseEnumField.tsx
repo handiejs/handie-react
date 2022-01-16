@@ -9,12 +9,14 @@ class BaseEnumFieldStructuralWidget<
   CT extends EnumFieldWidgetConfig = EnumFieldWidgetConfig
 > extends FieldStructuralWidget<ValueType, CT, EnumFieldHeadlessWidget<ValueType, CT>, S> {
   public readonly state = {
+    disabled: false,
     internalOptions: [],
     options: [],
     optionMap: {},
   } as any;
 
   public componentWillMount(): void {
+    super.componentWillMount();
     this.setHeadlessWidget(new EnumFieldHeadlessWidget(this.props, this.$$view));
 
     this.$$_h.initOptions(this.$$view, (options, resolveRenderOptions) => {

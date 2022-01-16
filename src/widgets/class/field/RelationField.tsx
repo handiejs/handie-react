@@ -34,6 +34,7 @@ class RelationFieldStructuralWidget<
   }
 
   public componentWillMount(): void {
+    super.componentWillMount();
     this.setHeadlessWidget(new RelationFieldHeadlessWidget(this.props, this.$$view));
 
     if (

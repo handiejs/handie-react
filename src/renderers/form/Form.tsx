@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 import {
   ContextExpression,
   ViewFieldDescriptor,
@@ -13,8 +15,6 @@ import {
   renderFormChildren,
   normalizeClassName,
 } from '@handie/runtime-core';
-
-import { ReactNode } from 'react';
 
 import { ComponentCtor } from '../../types/component';
 import BaseRenderer from '../base';

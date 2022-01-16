@@ -1,10 +1,10 @@
-import { BaseWidgetState, BooleanFieldWidgetConfig } from '@handie/runtime-core';
+import { BooleanFieldWidgetState, BooleanFieldWidgetConfig } from '@handie/runtime-core';
 import { BooleanFieldHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
 import { FieldStructuralWidget } from './Field';
 
 class BooleanFieldStructuralWidget<
-  S extends BaseWidgetState = BaseWidgetState,
+  S extends BooleanFieldWidgetState = BooleanFieldWidgetState,
   CT extends BooleanFieldWidgetConfig = BooleanFieldWidgetConfig
 > extends FieldStructuralWidget<boolean, CT, BooleanFieldHeadlessWidget<CT>, S> {
   protected get positiveLabel(): string {
@@ -20,6 +20,7 @@ class BooleanFieldStructuralWidget<
   }
 
   public componentWillMount(): void {
+    super.componentWillMount();
     this.setHeadlessWidget(new BooleanFieldHeadlessWidget(this.props, this.$$view));
   }
 }
