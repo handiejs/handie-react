@@ -1,4 +1,5 @@
 import { EnumFieldWidgetState, EnumFieldWidgetConfig } from '@handie/runtime-core';
+
 import { BaseEnumFieldStructuralWidget } from './BaseEnumField';
 
 class MultiEnumFieldStructuralWidget<

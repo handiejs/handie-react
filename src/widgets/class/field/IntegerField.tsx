@@ -1,15 +1,15 @@
-import { IntegerFieldWidgetState, FieldWidgetConfig } from '@handie/runtime-core';
-import { FieldHeadlessWidget } from '@handie/runtime-core/dist/widgets';
+import { IntegerFieldWidgetState, IntegerFieldWidgetConfig } from '@handie/runtime-core';
+import { IntegerFieldHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
 import { FieldStructuralWidget } from './Field';
 
 class IntegerFieldStructuralWidget<
   S extends IntegerFieldWidgetState = IntegerFieldWidgetState,
-  CT extends FieldWidgetConfig = FieldWidgetConfig
-> extends FieldStructuralWidget<number, CT, FieldHeadlessWidget<number, CT>, S> {
+  CT extends IntegerFieldWidgetConfig = IntegerFieldWidgetConfig
+> extends FieldStructuralWidget<number, CT, IntegerFieldHeadlessWidget<CT>, S> {
   public componentWillMount(): void {
     super.componentWillMount();
-    this.setHeadlessWidget(new FieldHeadlessWidget(this.props, this.$$view));
+    this.setHeadlessWidget(new IntegerFieldHeadlessWidget(this.props, this.$$view));
   }
 }
 

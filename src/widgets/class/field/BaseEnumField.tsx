@@ -1,4 +1,10 @@
-import { EnumFieldWidgetConfig, EnumFieldWidgetState, isString } from '@handie/runtime-core';
+import {
+  EnumFieldOption,
+  ResolvedEnumFieldOption,
+  EnumFieldWidgetConfig,
+  EnumFieldWidgetState,
+  isString,
+} from '@handie/runtime-core';
 import { EnumFieldHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
 import { FieldStructuralWidget } from './Field';
@@ -10,10 +16,10 @@ class BaseEnumFieldStructuralWidget<
 > extends FieldStructuralWidget<ValueType, CT, EnumFieldHeadlessWidget<ValueType, CT>, S> {
   public readonly state = {
     disabled: false,
-    internalOptions: [],
-    options: [],
+    internalOptions: [] as EnumFieldOption[],
+    options: [] as ResolvedEnumFieldOption[],
     optionMap: {},
-  } as any;
+  } as S;
 
   public componentWillMount(): void {
     super.componentWillMount();
