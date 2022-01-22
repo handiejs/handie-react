@@ -1,5 +1,5 @@
 import { DateValue, DateFieldWidgetState, DateFieldWidgetConfig } from '@handie/runtime-core';
-import { DateFieldHeadlessWidget } from '@handie/runtime-core/dist//widgets';
+import { DateFieldHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
 import { FieldStructuralWidget } from './Field';
 
