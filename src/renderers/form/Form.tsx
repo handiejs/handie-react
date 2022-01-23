@@ -8,6 +8,7 @@ import {
   isBoolean,
   isString,
   isNumber,
+  isFunction,
   runExpression,
   getControl,
   getBehaviorByKey,
@@ -179,6 +180,8 @@ export default class FormRenderer extends BaseRenderer<FormRendererProps> {
     const FormControl = getControl('Form') as ComponentCtor;
     const FormField = getControl('FormField') as ComponentCtor;
 
+    const { arrangement } = this.props.config || {};
+
     return FormControl ? (
       <FormControl
         className={normalizeClassName('HandieFormRenderer', this.props.className)}
@@ -191,7 +194,7 @@ export default class FormRenderer extends BaseRenderer<FormRendererProps> {
           this.props.fields.filter(
             ({ available }) => !isString(available) || this.isTrue(available!, false),
           ),
-          (this.props.config || {}).arrangement,
+          isFunction(arrangement) ? arrangement({ ...(this.props.value || {}) }) : arrangement,
           this.renderFieldGroup.bind(this),
           this.renderField.bind(this),
           this.renderFieldRow.bind(this),
