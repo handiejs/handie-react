@@ -16,7 +16,12 @@ class AdminLayoutStructuralWidget<
   }
 
   private filterRoutes(routes: any[] = this.getRoutes()): any[] {
-    return routes.filter(route => !(route.meta && route.meta.hide));
+    return routes.filter(
+      route =>
+        !(
+          ((route.meta && route.meta.hide) || (route.redirect && !route.name)) // FIXME: 适配 Umi 的 redirect 规则，路由配置统一后移出这个逻辑
+        ),
+    );
   }
 
   private getMenuPosition(): NavMenuPosition {
