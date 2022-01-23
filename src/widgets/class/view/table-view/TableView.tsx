@@ -102,6 +102,7 @@ class TableViewStructuralWidget<
       this.accessible,
       this,
       this.getBehavior('inlineButtonActionSize'),
+      this.getBehavior('inlineActionRenderType'),
     );
   }
 }

@@ -8,6 +8,7 @@ import {
   CellComponentRenderer,
   TableColumn,
   TableViewWidgetConfig,
+  ActionRenderType,
   isBoolean,
   isNumber,
   isFunction,
@@ -123,6 +124,7 @@ function resolveOperationColumn(
   authority: Record<string, boolean> | null,
   vm,
   inlineButtonSize: string,
+  inlineActionRenderType: ActionRenderType,
 ): TableColumn | null {
   const actionsAuthority = resolveActionsAuthority(context, vm);
 
@@ -145,11 +147,11 @@ function resolveOperationColumn(
             authority,
             vm,
           ).map(action => {
-            const { config = {}, ...others } = action;
+            const { renderType = inlineActionRenderType, config = {}, ...others } = action;
             const ActionRenderer = getRenderer('ActionRenderer') as ComponentCtor;
             const actionNode = ActionRenderer ? (
               <ActionRenderer
-                action={{ ...others, config: { size: inlineButtonSize, ...config } }}
+                action={{ ...others, renderType, config: { size: inlineButtonSize, ...config } }}
                 key={`${others.name || others.text}InlineActionOfTableViewWidget`}
               />
             ) : null;
@@ -204,6 +206,7 @@ function resolveTableColumns(
   authority: Record<string, boolean> | null,
   vm,
   inlineButtonSize: string,
+  inlineActionRenderType: ActionRenderType,
 ): TableColumn[] {
   const cols: TableColumn[] = context.getFields().map(field => ({
     key: field.name,
@@ -242,7 +245,13 @@ function resolveTableColumns(
     cols.unshift({ type: 'selection', width: selectionColumnWidth, align: 'center' });
   }
 
-  const operationCol = resolveOperationColumn(context, authority, vm, inlineButtonSize);
+  const operationCol = resolveOperationColumn(
+    context,
+    authority,
+    vm,
+    inlineButtonSize,
+    inlineActionRenderType,
+  );
 
   if (operationCol) {
     cols.push(operationCol);
@@ -256,6 +265,7 @@ function resolveTableProps(
   authority: Record<string, boolean> | null,
   vm,
   inlineButtonSize: string,
+  inlineActionRenderType: ActionRenderType,
 ): DataTableProps {
   return {
     ...omit(context.getConfig(), [
@@ -267,7 +277,7 @@ function resolveTableProps(
       'serialNumberColumnWidth',
       'operationColumnWidth',
     ]),
-    columns: resolveTableColumns(context, authority, vm, inlineButtonSize),
+    columns: resolveTableColumns(context, authority, vm, inlineButtonSize, inlineActionRenderType),
   };
 }
 
