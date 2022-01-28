@@ -85,6 +85,7 @@ class TableViewStructuralWidget<
         total={state.total}
         pageSizes={this.config.pageSizes || getBehaviorByKey('common.view.listViewPageSizes')}
         loading={state.loading}
+        autoHeight={this.config.autoHeight === true}
         onSelectionChange={selected => this.$$view.setValue(selected)}
         onCurrentChange={currentPage => this.$$view.setCurrentPage(currentPage)}
         onSizeChange={pageSize => this.$$view.setPageSize(pageSize)}
