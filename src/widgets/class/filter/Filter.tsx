@@ -4,6 +4,7 @@ import {
   BaseWidgetState,
   FilterWidgetConfig,
   IFilterWidget,
+  isBoolean,
 } from '@handie/runtime-core';
 import { FilterHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
@@ -24,6 +25,12 @@ class FilterStructuralWidget<
 
   protected get showValidationRulesAsNative(): boolean {
     return this.$$_h.isValidationRulesShownAsNative();
+  }
+
+  protected get searchImmediately(): boolean {
+    return isBoolean(this.config.searchImmediately)
+      ? this.config.searchImmediately
+      : this.getCommonBehavior('search.searchWhenSelectableFilterChange', false);
   }
 
   protected getPlaceholder(): string {
