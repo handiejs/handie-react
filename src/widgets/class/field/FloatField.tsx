@@ -11,6 +11,17 @@ class FloatFieldStructuralWidget<
     super.componentWillMount();
     this.setHeadlessWidget(new FloatFieldHeadlessWidget(this.props, this.$$view));
   }
+
+  public componentDidMount(): void {
+    const { rule, message } = this.config;
+
+    if (rule) {
+      this.setValueChecker(value => ({
+        success: rule.test(`${value}`),
+        message,
+      }));
+    }
+  }
 }
 
 export { FloatFieldStructuralWidget };
