@@ -88,7 +88,7 @@ class AdminLayoutStructuralWidget<
     }
 
     return NavMenu ? (
-      <NavMenu {...props}>
+      <NavMenu {...props} key={active}>
         {this.filterRoutes().map(route =>
           this.renderMenuItem(route, renderNavLink, menuPosition === 'both'),
         )}
@@ -117,6 +117,7 @@ class AdminLayoutStructuralWidget<
         className={this.getStyleClassName('AdminLayoutWidget-subNav')}
         defaultActiveFlag={active}
         defaultOpenFlags={open}
+        key={active}
       >
         {this.filterRoutes(routes).map(route => this.renderMenuItem(route, renderNavLink))}
       </NavMenu>
