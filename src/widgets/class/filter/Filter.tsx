@@ -1,10 +1,13 @@
 import {
   ListViewContext,
+  SearchDescriptor,
   SearchContext,
   BaseWidgetState,
+  SearchWidgetConfig,
   FilterWidgetConfig,
   IFilterWidget,
   isBoolean,
+  isPlainObject,
 } from '@handie/runtime-core';
 import { FilterHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
@@ -28,9 +31,22 @@ class FilterStructuralWidget<
   }
 
   protected get searchImmediately(): boolean {
-    return isBoolean(this.config.searchImmediately)
-      ? this.config.searchImmediately
-      : this.getCommonBehavior('search.searchWhenSelectableFilterChange', false);
+    if (isBoolean(this.config.searchImmediately)) {
+      return this.config.searchImmediately!;
+    }
+
+    const searchDescriptor = this.$$view.getSearch();
+
+    if (isPlainObject(searchDescriptor)) {
+      const { searchWhenSelectableFilterChange } =
+        (searchDescriptor as SearchDescriptor<SearchWidgetConfig>).config || {};
+
+      if (isBoolean(searchWhenSelectableFilterChange)) {
+        return searchWhenSelectableFilterChange!;
+      }
+    }
+
+    return this.getCommonBehavior('search.searchWhenSelectableFilterChange', false);
   }
 
   protected getPlaceholder(): string {
