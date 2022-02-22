@@ -3,21 +3,13 @@ import { DateFieldHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
 import { FieldStructuralWidget } from './Field';
 
-function resolveDateValue(date: Date | null): DateValue {
-  return date ? date.getTime() : '';
-}
-
 class DateFieldStructuralWidget<
   VT extends DateValue | DateValue[],
   S extends DateFieldWidgetState = DateFieldWidgetState,
   CT extends DateFieldWidgetConfig = DateFieldWidgetConfig
 > extends FieldStructuralWidget<VT, CT, DateFieldHeadlessWidget<VT, CT>, S> {
-  protected formatDate(value: DateValue): DateValue {
-    return this.$$_h.formatDate(value);
-  }
-
-  protected getSeparator(): string {
-    return this.config.separator || '-';
+  protected getDateValue(): DateValue {
+    return this.$$_h.getDateValue();
   }
 
   protected getRangeValue(): DateValue[] {
@@ -28,13 +20,25 @@ class DateFieldStructuralWidget<
     return this.$$_h.getRangePlaceholders();
   }
 
+  protected setDefaultFormat(format: string = ''): void {
+    this.$$_h.setDefaultFormat(format);
+  }
+
+  protected getDisplayFormat(): string {
+    return this.$$_h.getDisplayFormat();
+  }
+
+  protected getSeparator(): string {
+    return this.$$_h.getSeparator();
+  }
+
   protected onDateChange(date: Date | null): void {
-    this.onChange(resolveDateValue(date) as VT);
+    this.onChange(this.$$_h.resolveDateValue(date) as VT);
   }
 
   protected onRangeChange(dates: (Date | null)[] | null): void {
     const { fromField, toField } = this.config;
-    const range = dates ? dates.map(resolveDateValue) : [];
+    const range = dates ? dates.map(date => this.$$_h.resolveDateValue(date)) : [];
 
     if (!fromField && !toField) {
       this.onChange(range as VT);

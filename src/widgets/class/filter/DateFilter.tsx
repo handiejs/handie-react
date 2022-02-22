@@ -8,14 +8,6 @@ class DateFilterStructuralWidget<
   S extends DateFilterWidgetState = DateFilterWidgetState,
   CT extends DateFilterWidgetConfig = DateFilterWidgetConfig
 > extends FilterStructuralWidget<VT, CT, DateFilterHeadlessWidget<VT, CT>, S> {
-  protected formatDate(value: DateValue): DateValue {
-    return this.$$_h.formatDate(value);
-  }
-
-  protected getSeparator(): string {
-    return this.config.separator || '-';
-  }
-
   protected getRangeValue(): DateValue[] {
     return this.$$_h.getRangeValue();
   }
@@ -24,9 +16,21 @@ class DateFilterStructuralWidget<
     return this.$$_h.getRangePlaceholders();
   }
 
+  protected setDefaultFormat(format: string = ''): void {
+    this.$$_h.setDefaultFormat(format);
+  }
+
+  protected getDisplayFormat(): string {
+    return this.$$_h.getDisplayFormat();
+  }
+
+  protected getSeparator(): string {
+    return this.$$_h.getSeparator();
+  }
+
   protected onRangeChange(dates: (Date | null)[] | null): void {
     const { fromField, toField } = this.config;
-    const range = dates ? dates.map((date: Date | null) => (date ? date.getTime() : '')) : [];
+    const range = dates ? dates.map(date => this.$$_h.resolveDateValue(date)) : [];
 
     if (!fromField && !toField) {
       this.onChange(range as VT);
