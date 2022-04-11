@@ -1,11 +1,11 @@
+import { ReactNode, JSXElementConstructor } from 'react';
+
 import {
   FieldRendererProps,
   capitalize,
   resolveWidgetCtor,
   resolveFieldRenderType,
 } from '@handie/runtime-core';
-
-import { ReactNode, JSXElementConstructor } from 'react';
 
 import BaseRenderer from '../base';
 

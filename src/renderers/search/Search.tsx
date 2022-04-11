@@ -1,6 +1,6 @@
-import { ListViewContext, isFunction, getWidget } from '@handie/runtime-core';
-
 import { ReactNode, JSXElementConstructor } from 'react';
+
+import { ListViewContext, isFunction, getWidget } from '@handie/runtime-core';
 
 import BaseRenderer from '../base';
 

@@ -12,7 +12,7 @@ import {
 import { ComponentCtor } from '../../../../types/component';
 import { FormSearchWidgetConfig } from '../../../../types/widget';
 
-import { SearchStructuralWidget } from '../search/Search';
+import { SearchStructuralWidget } from '../search';
 import defaultBehaviors from './behavior';
 
 class FormSearchStructuralWidget<

@@ -20,6 +20,12 @@ class FieldStructuralWidget<
 > extends BaseStructuralWidget<IFieldWidget<ValueType>, S, CT, HW, ObjectViewContext> {
   public readonly state = { disabled: false } as S;
 
+  protected get showValidationRulesAsNative(): boolean {
+    return this.$$_h.isValidationRulesShownAsNative(
+      this.$$view.getConfig().showFieldValidationRulesAsNative,
+    );
+  }
+
   protected isTrue(booleanOrExpr: boolean | ContextExpression, defaultReturnValue?: any): boolean {
     return isString(booleanOrExpr)
       ? !!runExpression(
@@ -28,12 +34,6 @@ class FieldStructuralWidget<
           defaultReturnValue,
         )
       : (booleanOrExpr as boolean) === true;
-  }
-
-  protected get showValidationRulesAsNative(): boolean {
-    return this.$$_h.isValidationRulesShownAsNative(
-      this.$$view.getConfig().showFieldValidationRulesAsNative,
-    );
   }
 
   protected getPlaceholder(): string {

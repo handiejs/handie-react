@@ -1,3 +1,5 @@
+import { ReactNode, JSXElementConstructor } from 'react';
+
 import {
   ActionWidgetState,
   ActionWidgetConfig,
@@ -5,8 +7,6 @@ import {
   getControl,
 } from '@handie/runtime-core';
 import { ActionHeadlessWidget } from '@handie/runtime-core/dist/widgets';
-
-import { ReactNode, JSXElementConstructor } from 'react';
 
 import { BaseStructuralWidget } from '../base';
 
