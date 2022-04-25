@@ -1,6 +1,6 @@
 {
   "name": "handie-react",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "React framework for front-end of web-based management systems",
   "main": "dist/index.js",
   "module": "dist/index.js",
