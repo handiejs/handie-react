@@ -176,12 +176,19 @@ function resolveOperationColumn(
     },
   };
 
-  const { operationColumnWidth } = context.getConfig() as TableViewWidgetConfig;
+  const {
+    operationColumnWidth,
+    operationColumnAlignment,
+  } = context.getConfig() as TableViewWidgetConfig;
 
   if (operationColumnWidth) {
     col.width = isNumber(operationColumnWidth)
       ? `${operationColumnWidth}px`
       : (operationColumnWidth as string);
+  }
+
+  if (operationColumnAlignment) {
+    col.align = operationColumnAlignment;
   }
 
   return isActionsAuthorized(actionsAuthority, authority) && allSingleActions.length > 0
@@ -219,12 +226,19 @@ function resolveTableColumns(
   const {
     showSerialNumber,
     serialNumberColumnWidth = getBehaviorByKey('view.table.serialNumberColumnWidth', '55'),
+    serialNumberColumnAlignment = 'center',
     checkable,
     selectionColumnWidth = getBehaviorByKey('view.table.selectionColumnWidth', '55'),
+    selectionColumnAlignment = 'center',
   } = context.getConfig();
 
   if (showSerialNumber === true) {
-    cols.unshift({ title: '序号', type: 'index', width: serialNumberColumnWidth, align: 'center' });
+    cols.unshift({
+      title: '序号',
+      type: 'index',
+      width: serialNumberColumnWidth,
+      align: serialNumberColumnAlignment,
+    });
   }
 
   const actionsAuthority = resolveActionsAuthority(context, vm);
@@ -242,7 +256,11 @@ function resolveTableColumns(
     : [];
 
   if (isBoolean(checkable) ? checkable : checkableActions.length > 0) {
-    cols.unshift({ type: 'selection', width: selectionColumnWidth, align: 'center' });
+    cols.unshift({
+      type: 'selection',
+      width: selectionColumnWidth,
+      align: selectionColumnAlignment,
+    });
   }
 
   const operationCol = resolveOperationColumn(
@@ -274,8 +292,11 @@ function resolveTableProps(
       'title',
       'showTooltipWhenContentOverflow',
       'selectionColumnWidth',
+      'selectionColumnAlignment',
       'serialNumberColumnWidth',
+      'serialNumberColumnAlignment',
       'operationColumnWidth',
+      'operationColumnAlignment',
     ]),
     columns: resolveTableColumns(context, authority, vm, inlineButtonSize, inlineActionRenderType),
   };
