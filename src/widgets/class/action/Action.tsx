@@ -5,6 +5,7 @@ import {
   ActionWidgetConfig,
   IActionWidget,
   getControl,
+  getRenderer,
 } from '@handie/runtime-core';
 import { ActionHeadlessWidget } from '@handie/runtime-core/dist/widgets';
 
@@ -20,13 +21,26 @@ class ActionStructuralWidget<
     return ['ActionWidget', className, this.config.className].filter(cls => !!cls).join(' ');
   }
 
+  protected renderView(): ReactNode {
+    const ViewRenderer = getRenderer('ViewRenderer');
+    const viewRef = this.config.view;
+
+    return viewRef && ViewRenderer ? (
+      <ViewRenderer
+        key={`ViewRendererOfActionWidget-${(this as any).__handieReactWidgetId}`}
+        view={viewRef}
+        params={[this.$$view]}
+      />
+    ) : null;
+  }
+
   protected renderContent(): ReactNode[] | string {
     return this.$$_h.renderContent((iconRef, text, iconOnly) => {
       const Icon = getControl('Icon') as JSXElementConstructor<any>;
-      const children: ReactNode[] = [<Icon refs={iconRef} />];
+      const children: ReactNode[] = [<Icon key='ButtonActionIcon' refs={iconRef} />];
 
       if (!iconOnly) {
-        children.push(<span>{text}</span>);
+        children.push(<span key='ButtonActionText'>{text}</span>);
       }
 
       return children;
@@ -34,7 +48,11 @@ class ActionStructuralWidget<
   }
 
   protected onExecute(): void {
-    this.$$_h.execute(this.$$view);
+    if (this.config.view) {
+      this.$$view.emit(`dialog-view-show.${this.$$view.getId()}`);
+    } else {
+      this.$$_h.execute(this.$$view);
+    }
   }
 
   public componentWillMount(): void {

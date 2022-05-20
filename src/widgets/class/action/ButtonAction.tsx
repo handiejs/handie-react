@@ -33,9 +33,16 @@ class ButtonActionStructuralWidget<
   protected renderButton(props: Record<string, any> = {}): ReactNode {
     const Button = getControl('Button') as ComponentCtor;
 
-    return Button ? (
-      <Button {...resolveControlProps(this.resolveProps(), props)}>{this.renderContent()}</Button>
-    ) : null;
+    return (
+      <>
+        {Button ? (
+          <Button {...resolveControlProps(this.resolveProps(), props)}>
+            {this.renderContent()}
+          </Button>
+        ) : null}
+        {this.renderView()}
+      </>
+    );
   }
 }
 

@@ -16,9 +16,14 @@ class LinkActionStructuralWidget<
   protected renderLink(props: Record<string, any> = {}): ReactNode {
     const Link = getControl('Link') as ComponentCtor;
 
-    return Link ? (
-      <Link {...resolveControlProps(this.resolveProps(), props)}>{this.renderContent()}</Link>
-    ) : null;
+    return (
+      <>
+        {Link ? (
+          <Link {...resolveControlProps(this.resolveProps(), props)}>{this.renderContent()}</Link>
+        ) : null}
+        {this.renderView()}
+      </>
+    );
   }
 }
 

@@ -22,7 +22,12 @@ class IconActionStructuralWidget<
   protected renderIcon(props: Record<string, any> = {}): ReactNode {
     const Icon = getControl('Icon') as ComponentCtor;
 
-    return Icon ? <Icon {...resolveControlProps(this.resolveProps(), props)} /> : null;
+    return (
+      <>
+        {Icon ? <Icon {...resolveControlProps(this.resolveProps(), props)} /> : null}
+        {this.renderView()}
+      </>
+    );
   }
 }
 
